@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.kjk.mvc_sample.data.CalendarItemModel
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
 import com.kjk.mvc_sample.view.CalendarAdapter
+import java.time.Year
+import java.util.*
 
 /**
  *  리사이클러 뷰를 사용해서
@@ -20,29 +22,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val adapter: CalendarAdapter by lazy {
-        CalendarAdapter(model)
-    }
-
     private val model = CalendarItemModel()
+
+    private val current = GregorianCalendar()
+    private val year = current.get(Calendar.YEAR)
+    private var month = current.get(Calendar.MONTH)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.w("1111", "current :: ${year}, ${month + 1}")
+
         initLayoutValues()
         setListeners()
 
-        setCalendar()
+        setCalendar(year, month)
     }
 
     private fun initLayoutValues() {
         setContentView(binding.root)
 
-        // 리사이클러 뷰
-        binding.apply {
-            rvCalendar.layoutManager = createLayoutManager()
-            rvCalendar.adapter = adapter
-        }
+//        // 리사이클러 뷰
+//        binding.apply {
+//            rvCalendar.layoutManager = createLayoutManager()
+//            rvCalendar.adapter = adapter
+//        }
     }
 
     private fun createLayoutManager(): StaggeredGridLayoutManager {
@@ -54,18 +58,33 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonNextMonth.setOnClickListener(this)
     }
 
-    private fun setCalendar() {
-        model.createCalendarItem()
+    private fun setCalendar(year: Int, month: Int) {
+        val adapter = CalendarAdapter(year, month, model)
+
+        binding.apply {
+
+            textviewCurrentMonth.text = year.toString() + "년" + " " + month.toString() + "월"
+
+            // 리사이클러 뷰
+            rvCalendar.layoutManager = createLayoutManager()
+            rvCalendar.adapter = adapter
+        }
+
+        model.createCalendarDate(year, month)
     }
 
     override fun onClick(v: View?) {
         when(v) {
             binding.buttonPreMonth -> {
                 Log.w("1111", "preMonthBtn Clicked")
+                month--
+                setCalendar(year, month)
             }
 
             binding.buttonNextMonth -> {
                 Log.w("1111", "nextMonthBtn Clicked")
+                month++
+                setCalendar(year, month)
             }
         }
     }

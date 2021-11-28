@@ -10,10 +10,11 @@ import com.kjk.mvc_sample.data.CalendarItemModel
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
 
 class CalendarAdapter(
+        private val year: Int,
+        private val month: Int,
         private val model: CalendarItemModel
         ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-//    private val calendarItemList: ArrayList<CalendarItemEntity> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
