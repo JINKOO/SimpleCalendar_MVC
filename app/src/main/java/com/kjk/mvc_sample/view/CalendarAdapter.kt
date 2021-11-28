@@ -3,6 +3,7 @@ package com.kjk.mvc_sample.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.kjk.mvc_sample.data.CalendarItemEntity
 import com.kjk.mvc_sample.data.CalendarItemModel
@@ -35,18 +36,26 @@ class CalendarAdapter(
     class ViewHolder(
             private val binding: ItemCalendarDateBinding,
             private val model: CalendarItemModel
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         init {
             setListener()
         }
 
         fun bind() {
-            binding.calendarCellDate.text = model.getCalendarItemLists()[adapterPosition].date.toString()
+            binding.calendarDate.text = model.getCalendarItemLists()[adapterPosition].date.toString()
         }
 
         private fun setListener() {
+            binding.root.setOnClickListener(this)
+        }
 
+        override fun onClick(v: View?) {
+            when(v) {
+                binding.root -> {
+                    Toast.makeText(binding.root.context, binding.calendarDate.text, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }

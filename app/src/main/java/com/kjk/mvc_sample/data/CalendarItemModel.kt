@@ -9,7 +9,10 @@ class CalendarItemModel {
     private var calendarItemLists: ArrayList<CalendarItemEntity> = ArrayList()
 
     fun createCalendarItem() {
-
+        for (date in 0 until 100) {
+            val calendarItemEntity = CalendarItemEntity(date + 1)
+            calendarItemLists.add(calendarItemEntity)
+        }
     }
 
     fun getCalendarItemLists() = this.calendarItemLists
