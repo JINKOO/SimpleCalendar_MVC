@@ -5,12 +5,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- *   달력
+ *   날짜를 생성하는 부분
  *   비즈니스 로직에 해당하는 부분이다.
  */
 class CalendarItemModel {
 
     private var calendarItemLists: ArrayList<CalendarItemEntity> = ArrayList()
+
 
     fun createCalendarDate(year: Int, month: Int) {
         val calendar = GregorianCalendar(year, month, 1)

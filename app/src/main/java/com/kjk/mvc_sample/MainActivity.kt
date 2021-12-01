@@ -14,7 +14,6 @@ import java.util.*
 /**
  *  리사이클러 뷰를 사용해서
  *  달력을 만든다.
- *  유의해야하는 점은 이것이다.
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -25,7 +24,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val model = CalendarItemModel()
 
     private val current = GregorianCalendar()
-    private val year = current.get(Calendar.YEAR)
+
+    private var year = current.get(Calendar.YEAR)
     private var month = current.get(Calendar.MONTH)
 
     override fun onCreate(savedInstanceState: Bundle?) {
