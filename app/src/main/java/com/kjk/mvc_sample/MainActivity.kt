@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.apply {
 
-            textviewCurrentMonth.text = year.toString() + "년" + " " + month.toString() + "월"
+            textviewCurrentMonth.text = year.toString() + "년" + " " + (month + 1).toString() + "월"
 
             // 리사이클러 뷰
             rvCalendar.layoutManager = createLayoutManager()
