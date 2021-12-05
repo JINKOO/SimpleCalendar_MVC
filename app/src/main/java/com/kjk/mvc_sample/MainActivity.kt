@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.kjk.mvc_sample.data.CalendarItemModel
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
 import com.kjk.mvc_sample.view.CalendarAdapter
-import java.time.Year
 import java.util.*
 
 /**
@@ -22,11 +21,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val model = CalendarItemModel()
+    private lateinit var adapter: CalendarAdapter
 
-    private val current = GregorianCalendar()
-
-    private var year = current.get(Calendar.YEAR)
-    private var month = current.get(Calendar.MONTH)
+    private val today = GregorianCalendar()
+    private var year = today.get(Calendar.YEAR)
+    private var month = today.get(Calendar.MONTH)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +40,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initLayoutValues() {
         setContentView(binding.root)
-
-//        // 리사이클러 뷰
-//        binding.apply {
-//            rvCalendar.layoutManager = createLayoutManager()
-//            rvCalendar.adapter = adapter
-//        }
     }
 
-    private fun createLayoutManager(): StaggeredGridLayoutManager {
-        return StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
+
+    private fun createLayoutManager(): GridLayoutManager {
+        return GridLayoutManager(this, 7)
     }
 
     private fun setListeners() {
@@ -59,12 +53,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setCalendar(year: Int, month: Int) {
-        val adapter = CalendarAdapter(year, month, model)
+        this.adapter = CalendarAdapter(year, month, model)
 
         binding.apply {
-
-            textviewCurrentMonth.text = year.toString() + "년" + " " + (month + 1).toString() + "월"
-
+            textviewCurrentMonth.text = makeCurrentDateString(year, month)
             // 리사이클러 뷰
             rvCalendar.layoutManager = createLayoutManager()
             rvCalendar.adapter = adapter
@@ -73,17 +65,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         model.createCalendarDate(year, month)
     }
 
+    private fun makeCurrentDateString(year: Int, month: Int): String {
+        val currentDate = GregorianCalendar(year, month, 1)
+        return currentDate.get(Calendar.YEAR).toString() + "년" + " " + (currentDate.get(Calendar.MONTH) + 1).toString() + "월"
+    }
+
+    /** 이전 달, 다음 달 선택 했을 때, 현재 그려져 있는 달력을 지워야 한다.*/
+    private fun clearCalendar() {
+        model.deleteAllDate()
+        adapter.notifyDataSetChanged()
+        binding.rvCalendar.adapter = this.adapter
+    }
+
+    /** 이전 달, 다음 달 이동 로직 */
     override fun onClick(v: View?) {
         when(v) {
             binding.buttonPreMonth -> {
                 Log.w("1111", "preMonthBtn Clicked")
                 month--
+                clearCalendar()
                 setCalendar(year, month)
             }
 
             binding.buttonNextMonth -> {
                 Log.w("1111", "nextMonthBtn Clicked")
                 month++
+                clearCalendar()
                 setCalendar(year, month)
             }
         }

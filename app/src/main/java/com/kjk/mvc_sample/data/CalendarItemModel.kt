@@ -11,21 +11,50 @@ import kotlin.collections.ArrayList
 class CalendarItemModel {
 
     private var calendarItemLists: ArrayList<CalendarItemEntity> = ArrayList()
+    private lateinit var calendar: GregorianCalendar
 
-
+    /** 달력 data생성 */
     fun createCalendarDate(year: Int, month: Int) {
-        val calendar = GregorianCalendar(year, month, 1)
+        this.calendar = GregorianCalendar(year, month, 1)
 
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
+        // 현재 달의 시작 요일
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+        // 현재 달의 최대 일수
         val max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        Log.w("1111", "${dayOfWeek}, ${max}")
+        Log.w("1111", "createCalendarDate() :: ${dayOfWeek}, ${checkDayOfWeek(dayOfWeek)}, ${max}")
 
+        // 달의 시작 요일 전까지 0을 add한다.
+        for (i in 1 until dayOfWeek) {
+            calendarItemLists.add(CalendarItemEntity(0))
+        }
+
+        // 달의 날짜 data (1 ~ 31 or 1 ~ 30) add한다.
         for (date in 1 .. max) {
-            val calendarDateItem = CalendarItemEntity(date)
-            calendarItemLists.add(calendarDateItem)
+            calendarItemLists.add(CalendarItemEntity(date))
         }
     }
 
+    private fun checkDayOfWeek(dayOfWeek: Int): String {
+        return when(dayOfWeek) {
+            Calendar.SUNDAY -> "일요일"
+            Calendar.MONDAY -> "월요일"
+            Calendar.TUESDAY -> "화요일"
+            Calendar.WEDNESDAY -> "수요일"
+            Calendar.THURSDAY -> "목요일"
+            Calendar.FRIDAY -> "금요일"
+            Calendar.SATURDAY -> "토요일"
+            else -> ""
+        }
+    }
+
+    fun deleteAllDate() {
+        calendarItemLists.clear()
+    }
+
+    fun getCurrentCalendar() = this.calendar
+
     fun getCalendarItemLists() = this.calendarItemLists
+
 }
