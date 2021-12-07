@@ -5,8 +5,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- *   날짜를 생성하는 부분
- *   비즈니스 로직에 해당하는 부분이다.
+ *   달력에서 날짜를 생성하는 부분.
+ *   Model에서 비즈니스 로직에 해당하는 부분이다.
  */
 class CalendarItemModel {
 

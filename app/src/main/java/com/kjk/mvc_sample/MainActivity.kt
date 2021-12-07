@@ -13,6 +13,7 @@ import java.util.*
 /**
  *  리사이클러 뷰를 사용해서
  *  달력을 만든다.
+ *  Controller 및 View(xml)에 해당.
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -34,7 +35,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         initLayoutValues()
         setListeners()
-
         setCalendar(year, month)
     }
 

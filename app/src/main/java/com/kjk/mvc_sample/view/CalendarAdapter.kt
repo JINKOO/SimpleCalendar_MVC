@@ -55,6 +55,7 @@ class CalendarAdapter(
 
             binding.calendarDate.text = item.date.toString()
 
+            // 0이 있는 곳은 날짜가 생성되지 않아야 하는 곳이다.
             if (item.date == 0) {
                 binding.apply {
                     imageViewDayColor.visibility = View.GONE
@@ -62,7 +63,7 @@ class CalendarAdapter(
                 }
             }
 
-            // 토요일 색상 지정
+            // 토요일 색상 지정. 파랑
             if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
                 binding.apply {
                     calendarDate.setTextColor(Color.BLUE)
@@ -70,7 +71,7 @@ class CalendarAdapter(
                 }
             }
 
-            // 일요일 색상 지정
+            // 일요일 색상 지정. 빨간
             if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
                 binding.apply {
                     calendarDate.setTextColor(Color.RED)
@@ -78,7 +79,7 @@ class CalendarAdapter(
                 }
             }
 
-            // 오늘 날짜 색상 지정
+            // 오늘 날짜 색상 지정색. 초록
             val today = GregorianCalendar()
             if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
                     today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
@@ -98,7 +99,7 @@ class CalendarAdapter(
             when(v) {
                 binding.root -> {
                     // 날짜가 생성된 부분에서만 한다.
-                    if (binding.calendarDate.text != "0") {
+                    if (model.getCalendarItemLists()[adapterPosition].date != 0) {
                         Toast.makeText(
                                 binding.root.context,
                                 makeDateString(model.getCurrentCalendar().get(Calendar.YEAR), model.getCurrentCalendar().get(Calendar.MONTH), model.getCalendarItemLists()[adapterPosition].date),
