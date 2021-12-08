@@ -2,11 +2,13 @@ package com.kjk.mvc_sample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kjk.mvc_sample.data.CalendarItemModel
+import com.kjk.mvc_sample.data.CalendarRepository
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
+import com.kjk.mvc_sample.extension.formatYearMonth
+import com.kjk.mvc_sample.extension.month
+import com.kjk.mvc_sample.extension.year
 import com.kjk.mvc_sample.view.CalendarAdapter
 import java.util.*
 
@@ -21,78 +23,70 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val model = CalendarItemModel()
-    private lateinit var adapter: CalendarAdapter
-
-    private val today = GregorianCalendar()
-    private var year = today.get(Calendar.YEAR)
-    private var month = today.get(Calendar.MONTH)
+    private val model = CalendarRepository()
+    private lateinit var calendarAdapter: CalendarAdapter
+    private val baseDate = GregorianCalendar()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        Log.w("1111", "current :: ${year}, ${month + 1}")
-
-        initLayoutValues()
-        setListeners()
-        setCalendar(year, month)
-    }
-
-    private fun initLayoutValues() {
         setContentView(binding.root)
+
+        setAdapter()
+        setListeners()
+        setCalendar(baseDate.year, baseDate.month)
     }
 
-
-    private fun createLayoutManager(): GridLayoutManager {
-        return GridLayoutManager(this, 7)
+    private fun setAdapter() {
+        calendarAdapter = CalendarAdapter(
+            model.getCalendarItemLists(),
+            GregorianCalendar(baseDate.year, baseDate.month, 1)
+        )
+        binding.apply {
+            rvCalendar.layoutManager = GridLayoutManager(this@MainActivity, 7)
+            rvCalendar.adapter = calendarAdapter
+        }
     }
 
     private fun setListeners() {
-        binding.buttonPreMonth.setOnClickListener(this)
-        binding.buttonNextMonth.setOnClickListener(this)
+        binding.apply {
+            buttonPreMonth.setOnClickListener(this@MainActivity)
+            buttonNextMonth.setOnClickListener(this@MainActivity)
+        }
     }
 
     private fun setCalendar(year: Int, month: Int) {
-        this.adapter = CalendarAdapter(year, month, model)
-
+        model.fetchCalendar(year, month)
         binding.apply {
-            textviewCurrentMonth.text = makeCurrentDateString(year, month)
-            // 리사이클러 뷰
-            rvCalendar.layoutManager = createLayoutManager()
-            rvCalendar.adapter = adapter
+            fetchCalendarTitle(year, month)
+            calendarAdapter.baseCalendar = GregorianCalendar(year, month, 1)
+            calendarAdapter.itemList = model.getCalendarItemLists()
+            calendarAdapter.notifyDataSetChanged()
         }
-
-        model.createCalendarDate(year, month)
     }
 
-    private fun makeCurrentDateString(year: Int, month: Int): String {
+    private fun fetchCalendarTitle(year: Int, month: Int) {
         val currentDate = GregorianCalendar(year, month, 1)
-        return currentDate.get(Calendar.YEAR).toString() + "년" + " " + (currentDate.get(Calendar.MONTH) + 1).toString() + "월"
+        binding.textviewCurrentMonth.text = currentDate.formatYearMonth()
     }
 
     /** 이전 달, 다음 달 선택 했을 때, 현재 그려져 있는 달력을 지워야 한다.*/
     private fun clearCalendar() {
         model.deleteAllDate()
-        adapter.notifyDataSetChanged()
-        binding.rvCalendar.adapter = this.adapter
+        calendarAdapter.notifyDataSetChanged()
+        binding.rvCalendar.adapter = this.calendarAdapter
     }
 
     /** 이전 달, 다음 달 이동 로직 */
     override fun onClick(v: View?) {
-        when(v) {
-            binding.buttonPreMonth -> {
-                Log.w("1111", "preMonthBtn Clicked")
-                month--
-                clearCalendar()
-                setCalendar(year, month)
-            }
-
-            binding.buttonNextMonth -> {
-                Log.w("1111", "nextMonthBtn Clicked")
-                month++
-                clearCalendar()
-                setCalendar(year, month)
-            }
+        when (v) {
+            binding.buttonPreMonth -> moveMonth(-1)
+            binding.buttonNextMonth -> moveMonth(1)
         }
+    }
+
+    private fun moveMonth(amount: Int) {
+        baseDate.month += amount
+        clearCalendar()
+        setCalendar(baseDate.year, baseDate.month)
     }
 }
