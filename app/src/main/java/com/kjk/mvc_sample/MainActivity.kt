@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kjk.mvc_sample.data.CalendarItemModel
+import com.kjk.mvc_sample.data.CalendarItemRepository
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
 import com.kjk.mvc_sample.view.CalendarAdapter
+import java.time.LocalDateTime
 import java.util.*
 
 /**
@@ -21,47 +22,45 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val model = CalendarItemModel()
-    private lateinit var adapter: CalendarAdapter
+    private val model = CalendarItemRepository()
+    private lateinit var calendarAdapter: CalendarAdapter
 
-    private val today = GregorianCalendar()
-    private var year = today.get(Calendar.YEAR)
-    private var month = today.get(Calendar.MONTH)
+    /** 기존에 GregorianCalendar를 사용했지만,
+     * LocalDateTime을 실무에서 많이 사용하므로, 리팩토링 코드에서는 LocalDateTime을 사용한다.
+     */
+    // 현재 시간 받아오기
+    private val baseDate = LocalDateTime.now()
+    private var year = baseDate.year
+    private var month = baseDate.monthValue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.w("1111", "current :: ${year}, ${month + 1}")
-
-        initLayoutValues()
+        Log.d(TAG, "onCreate: ${baseDate}, ${year}, ${month}")
+        setContentView(binding.root)
+        setAdapter()
         setListeners()
         setCalendar(year, month)
     }
 
-    private fun initLayoutValues() {
-        setContentView(binding.root)
-    }
-
-
-    private fun createLayoutManager(): GridLayoutManager {
-        return GridLayoutManager(this, 7)
+    private fun setAdapter() {
+        calendarAdapter = CalendarAdapter(baseDate.year, baseDate.monthValue)
     }
 
     private fun setListeners() {
-        binding.buttonPreMonth.setOnClickListener(this)
-        binding.buttonNextMonth.setOnClickListener(this)
+        binding.buttonPreMonth.setOnClickListener(this@MainActivity)
+        binding.buttonNextMonth.setOnClickListener(this@MainActivity)
     }
 
     private fun setCalendar(year: Int, month: Int) {
-        this.adapter = CalendarAdapter(year, month, model)
+        /** Adapter는 1번만 초기화 하는 것이 좋다. */
+//        this.adapter = CalendarAdapter(year, month, model)
 
         binding.apply {
             textviewCurrentMonth.text = makeCurrentDateString(year, month)
-            // 리사이클러 뷰
-            rvCalendar.layoutManager = createLayoutManager()
-            rvCalendar.adapter = adapter
+            rvCalendar.layoutManager = GridLayoutManager(this@MainActivity, 7)
+            rvCalendar.adapter = calendarAdapter
         }
-
         model.createCalendarDate(year, month)
     }
 
@@ -73,26 +72,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     /** 이전 달, 다음 달 선택 했을 때, 현재 그려져 있는 달력을 지워야 한다.*/
     private fun clearCalendar() {
         model.deleteAllDate()
-        adapter.notifyDataSetChanged()
-        binding.rvCalendar.adapter = this.adapter
+        calendarAdapter.notifyDataSetChanged()
+        binding.rvCalendar.adapter = calendarAdapter
     }
 
     /** 이전 달, 다음 달 이동 로직 */
     override fun onClick(v: View?) {
         when(v) {
-            binding.buttonPreMonth -> {
-                Log.w("1111", "preMonthBtn Clicked")
-                month--
-                clearCalendar()
-                setCalendar(year, month)
-            }
-
-            binding.buttonNextMonth -> {
-                Log.w("1111", "nextMonthBtn Clicked")
-                month++
-                clearCalendar()
-                setCalendar(year, month)
-            }
+            binding.buttonPreMonth -> {moveAmount(1)}
+            binding.buttonNextMonth -> {moveAmount(-1)}
         }
+    }
+
+    private fun moveAmount(amount: Int) {
+        baseDate.monthValue += amount
+        clearCalendar()
+        setCalendar(year, baseDate.monthValue)
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

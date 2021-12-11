@@ -7,8 +7,11 @@ import kotlin.collections.ArrayList
 /**
  *   달력에서 날짜를 생성하는 부분.
  *   Model에서 비즈니스 로직에 해당하는 부분이다.
+ *
+ *   Repository로 이름을 변경한다.
+ *
  */
-class CalendarItemModel {
+class CalendarItemRepository {
 
     private var calendarItemLists: ArrayList<CalendarItemEntity> = ArrayList()
     private lateinit var calendar: GregorianCalendar
@@ -19,11 +22,8 @@ class CalendarItemModel {
 
         // 현재 달의 시작 요일
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-
         // 현재 달의 최대 일수
         val max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-
-        Log.w("1111", "createCalendarDate() :: ${dayOfWeek}, ${checkDayOfWeek(dayOfWeek)}, ${max}")
 
         // 달의 시작 요일 전까지 0을 add한다.
         for (i in 1 until dayOfWeek) {
