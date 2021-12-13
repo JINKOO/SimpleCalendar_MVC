@@ -35,21 +35,25 @@ class CalendarAdapter(
 
         // bind에서는 굳이 포지션 값이 필요없다. 현재 포지션에 그려주는 것이기 때문에 position값이 필요없다.
         fun bind(calendarItemEntity: CalendarItemEntity, month: Int) {
-            val item = repository.getCalendarItemLists()[adapterPosition]
-            val calendar = GregorianCalendar(year, month, item.date)
+//            val item = repository.getCalendarItemLists()[adapterPosition]
+//            val calendar = GregorianCalendar(year, month, item.date)
 
-            binding.calendarDate.text = item.date.toString()
+            // 현재 그려져야 할 월에 해당하는 날짜라면,
+//            if () {
+//            } else { // 이전 달, or 다음 달의 날짜라면 그리지 않아야 한다.
+//
+//            }
 
             setDateHeaderColor(calendarItemEntity)
             setDateTextColor(calendarItemEntity)
 
             // 0이 있는 곳은 날짜가 생성되지 않아야 하는 곳이다.
-            if (item.date == 0) {
-                binding.apply {
-                    imageViewDayColor.visibility = View.GONE
-                    calendarDate.visibility = View.GONE
-                }
-            }
+//            if (item.date == 0) {
+//                binding.apply {
+//                    imageViewDayColor.visibility = View.GONE
+//                    calendarDate.visibility = View.GONE
+//                }
+//            }
         }
 
         private fun setListener() {
@@ -60,13 +64,13 @@ class CalendarAdapter(
             when(v) {
                 binding.root -> {
                     // 날짜가 생성된 부분에서만 한다.
-                    if (repository.getCalendarItemLists()[adapterPosition].date != 0) {
-                        Toast.makeText(
-                            binding.root.context,
-                            makeDateString(repository.getCurrentCalendar().get(Calendar.YEAR), repository.getCurrentCalendar().get(Calendar.MONTH), repository.getCalendarItemLists()[adapterPosition].date),
-                            Toast.LENGTH_SHORT)
-                            .show()
-                    }
+//                    if (repository.getCalendarItemLists()[adapterPosition].date != 0) {
+//                        Toast.makeText(
+//                            binding.root.context,
+//                            makeDateString(repository.getCurrentCalendar().get(Calendar.YEAR), repository.getCurrentCalendar().get(Calendar.MONTH), repository.getCalendarItemLists()[adapterPosition].date),
+//                            Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
                 }
             }
         }
@@ -75,6 +79,7 @@ class CalendarAdapter(
             return year.toString() + "년" + " " + (month + 1).toString() + "월" + " " + date.toString() + "일"
         }
 
+        /** 각 날짜 칸에서 위의 색상을 지정하는 함수 */
         private fun setDateHeaderColor(calendarItemEntity: CalendarItemEntity) {
             binding.apply {
                 when {
@@ -94,6 +99,7 @@ class CalendarAdapter(
             }
         }
 
+        /** 각 날짜 칸에서 날짜 텍스트를 지정하는 것 */
         private fun setDateTextColor(calendarItemEntity: CalendarItemEntity) {
             binding.apply {
                 when {
@@ -126,6 +132,6 @@ class CalendarAdapter(
     }
 
     override fun getItemCount(): Int {
-        return repository.getCalendarItemLists().size
+        return itemList.size
     }
 }

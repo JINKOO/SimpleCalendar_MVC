@@ -63,56 +63,56 @@
 
         <GridLayout
             android:id="@+id/linear_layout_days"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:textAlignment="center"
                 android:text="@string/sunday" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:textAlignment="center"
                 android:text="@string/monday" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:textAlignment="center"
                 android:text="@string/tuesday" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:textAlignment="center"
                 android:text="@string/wednesday" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:textAlignment="center"
                 android:text="@string/thursday" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:textAlignment="center"
                 android:text="@string/friday" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
                 android:textAlignment="center"
                 android:text="@string/saturday" />

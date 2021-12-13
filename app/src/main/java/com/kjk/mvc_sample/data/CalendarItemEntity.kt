@@ -24,3 +24,11 @@ data class CalendarItemEntity (
 fun CalendarItemEntity.toLocalDate(): LocalDate {
     return LocalDate.of(year, month, date)
 }
+
+fun LocalDate.toCalendarItemEntity(): CalendarItemEntity {
+    return CalendarItemEntity(
+            year,
+            monthValue,
+            dayOfMonth
+    )
+}
