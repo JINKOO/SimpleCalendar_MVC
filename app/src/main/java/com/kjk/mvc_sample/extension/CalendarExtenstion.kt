@@ -9,3 +9,7 @@ fun LocalDate.isToday(): Boolean {
             today.monthValue == this.monthValue &&
             today.dayOfMonth == this.dayOfMonth
 }
+
+fun LocalDate.isCurrentMonth(currentMonth: Int): Boolean {
+    return monthValue == currentMonth
+}

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kjk.mvc_sample.data.CalendarItemEntity
 import com.kjk.mvc_sample.data.toLocalDate
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
+import com.kjk.mvc_sample.extension.isCurrentMonth
 import java.util.*
 import com.kjk.mvc_sample.extension.isToday
 import java.time.LocalDate
@@ -19,10 +20,10 @@ import java.time.LocalDate
  *  Adapter에서는 Data Layer에서 Entity 혹은 VO를 사용해야 한다.
  */
 class CalendarAdapter(
-        private val year: Int,
-        private val month: Int,
-        private val date: Int,
-        private val itemList: ArrayList<CalendarItemEntity>
+        var year: Int,
+        var month: Int,
+        var date: Int,
+        var itemList: ArrayList<CalendarItemEntity>
 ) : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 
     class CalendarViewHolder(
@@ -38,22 +39,17 @@ class CalendarAdapter(
 //            val item = repository.getCalendarItemLists()[adapterPosition]
 //            val calendar = GregorianCalendar(year, month, item.date)
 
-            // 현재 그려져야 할 월에 해당하는 날짜라면,
-//            if () {
-//            } else { // 이전 달, or 다음 달의 날짜라면 그리지 않아야 한다.
-//
-//            }
+            binding.apply {
+                calendarDate.text = calendarItemEntity.date.toString()
 
-            setDateHeaderColor(calendarItemEntity)
-            setDateTextColor(calendarItemEntity)
-
-            // 0이 있는 곳은 날짜가 생성되지 않아야 하는 곳이다.
-//            if (item.date == 0) {
-//                binding.apply {
-//                    imageViewDayColor.visibility = View.GONE
-//                    calendarDate.visibility = View.GONE
-//                }
-//            }
+                // 현재 그려져야 할 월에 해당하는 날짜라면,
+                if (calendarItemEntity.toLocalDate().isCurrentMonth(month)) {
+                    setDateHeaderColor(calendarItemEntity)
+                    setDateTextColor(calendarItemEntity)
+                } else { // 이전 달, or 다음 달의 날짜라면 회색으로 표시한다.
+                    calendarDate.setTextColor(Color.GRAY)
+                }
+            }
         }
 
         private fun setListener() {
@@ -113,7 +109,7 @@ class CalendarAdapter(
                         calendarDate.setTextColor(Color.RED)
                     }
                     else -> {
-                        calendarDate.setTextColor(Color.BLACK)
+                        calendarDate.setTextColor(Color.YELLOW)
                     }
                 }
             }

@@ -51,6 +51,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 baseDate.dayOfMonth,
                 model.getCalendarItemLists()
         )
+
+        binding.apply {
+            rvCalendar.layoutManager = GridLayoutManager(this@MainActivity, 7)
+            rvCalendar.adapter = calendarAdapter
+        }
     }
 
     private fun setListeners() {
@@ -59,18 +64,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setCalendar(year: Int, month: Int) {
-        /** Adapter는 1번만 초기화 하는 것이 좋다. */
-//        this.adapter = CalendarAdapter(year, month, model)
-
         Log.d(TAG, "setCalendar: ${year},  ${month}")
-        
+        model.fetchCalendarData(year, month)
         binding.apply {
             textviewCurrentMonth.text = makeCurrentDateString(year, month)
-            rvCalendar.layoutManager = GridLayoutManager(this@MainActivity, 7)
-            rvCalendar.adapter = calendarAdapter
+            calendarAdapter.year = year
+            calendarAdapter.month = month
+            calendarAdapter.itemList = model.getCalendarItemLists()
+            calendarAdapter.notifyDataSetChanged()
         }
-//        model.createCalendarDate(year, month)
-        model.fetchCalendarData(year, month)
     }
 
     private fun makeCurrentDateString(year: Int, month: Int): String {

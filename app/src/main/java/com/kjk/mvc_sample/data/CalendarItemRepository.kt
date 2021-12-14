@@ -46,11 +46,14 @@ class CalendarItemRepository {
             minusDays(dayOfWeek.toLong())
         }
 
+        Log.w(TAG, "fetchCalendarData: ${dayOfWeek}, ${startDate}")
+
         repeat(42) {
             (startDate)
                     .apply {plusDays(1)}
                     .toCalendarItemEntity()
                     .also { calendarItemLists.add(it) }
+            Log.w(TAG, "fetchCalendarData: ${it}, ${startDate}")
         }
     }
 
@@ -75,4 +78,7 @@ class CalendarItemRepository {
 
     fun getCalendarItemLists() = this.calendarItemLists
 
+    companion object {
+        private const val TAG = "CalendarItemRepository"
+    }
 }
