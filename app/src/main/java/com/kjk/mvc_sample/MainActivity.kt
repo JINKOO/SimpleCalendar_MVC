@@ -22,15 +22,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private val model = CalendarItemModel()
+
+    //TODO : by lazy와 late init을 어떤경우에 구분해서 쓰시나요?
     private lateinit var adapter: CalendarAdapter
 
+
+    // TODO : 얘네 전부 모델에 있어야할 놈들
     private val today = GregorianCalendar()
     private var year = today.get(Calendar.YEAR)
     private var month = today.get(Calendar.MONTH)
+    ///////////////////////////////////////////////
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // TODO: log w  레벨을 쓰는 이유는 뭔가요?
         Log.w("1111", "current :: ${year}, ${month + 1}")
 
         initLayoutValues()
@@ -56,6 +65,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         this.adapter = CalendarAdapter(year, month, model)
 
         binding.apply {
+            //TODO : 이 경우 apply의 용법이 잘못된 것 같습니다.
             textviewCurrentMonth.text = makeCurrentDateString(year, month)
             // 리사이클러 뷰
             rvCalendar.layoutManager = createLayoutManager()
@@ -66,6 +76,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun makeCurrentDateString(year: Int, month: Int): String {
+        //TODO : 이 놈은 모델에 있어야할 펑션입니다.
         val currentDate = GregorianCalendar(year, month, 1)
         return currentDate.get(Calendar.YEAR).toString() + "년" + " " + (currentDate.get(Calendar.MONTH) + 1).toString() + "월"
     }
@@ -74,7 +85,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun clearCalendar() {
         model.deleteAllDate()
         adapter.notifyDataSetChanged()
-        binding.rvCalendar.adapter = this.adapter
+        binding.rvCalendar.adapter = this.adapter // TODO : 어댑터를 왜 다씨 주입하죠?
     }
 
     /** 이전 달, 다음 달 이동 로직 */
