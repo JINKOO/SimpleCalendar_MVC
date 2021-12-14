@@ -16,6 +16,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <!--
+        TODO : 굳이 LinearLayout을 한겹 더 씌우지 않아도 됐을 것 같은데 , 이렇게 한 이유가 있을까요
+        TODO : ViewGrouop의 Depth는 적을 수록 좋습니다.
+        -->
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/calendar_main_header"
             android:layout_width="match_parent"

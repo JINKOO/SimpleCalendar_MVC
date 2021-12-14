@@ -14,6 +14,10 @@ class CalendarItemModel {
     private lateinit var calendar: GregorianCalendar
 
     /** 달력 data생성 */
+
+    // TODO : createCalendarDate라는 펑션이 지금 하는일이 많아요
+    // TODO : 캘린더 변수 초기화 / 월의 첫 요일 얻기 / 월의 마지막 요일 얻기 / 처음 시작하는 요일을 위해 리스트에 0 추가 / 1일부터 31일까지 추가
+    // TODO : 이 많은 일들은 각각의 펑션으로 분리하고 최상위 펑션에서 각가그이 펑션을 호출만 해서 , 보는자로 하여금 코드 플로우를 알수있게 작성해야합니다.
     fun createCalendarDate(year: Int, month: Int) {
         this.calendar = GregorianCalendar(year, month, 1)
 
@@ -26,6 +30,7 @@ class CalendarItemModel {
         Log.w("1111", "createCalendarDate() :: ${dayOfWeek}, ${checkDayOfWeek(dayOfWeek)}, ${max}")
 
         // 달의 시작 요일 전까지 0을 add한다.
+        // TODO : 다른 사람이 아래 1을 보면 어떤 의민지 알수 있을까요? ,  이런 경우를 위해 의미를 단박에 알수 없는 상수값의경 상수변수로 관리합니다. 변수 네이밍을 해서 .
         for (i in 1 until dayOfWeek) {
             calendarItemLists.add(CalendarItemEntity(0))
         }
@@ -36,6 +41,7 @@ class CalendarItemModel {
         }
     }
 
+    // TODO : 아래와 같은 요일에 대한 상수는 멤버 변수 또는 companyon OBject같은 스태틱 변수 또는  Enum  or Sealed class로 관리 바람
     private fun checkDayOfWeek(dayOfWeek: Int): String {
         return when(dayOfWeek) {
             Calendar.SUNDAY -> "일요일"

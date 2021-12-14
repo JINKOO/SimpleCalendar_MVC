@@ -13,9 +13,10 @@ import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
 import java.util.*
 
 class CalendarAdapter(
-        private val year: Int,
+        private val year: Int, //TODO : 이런 값들은 직접 전달 하는것이아닌, 모델을 통해서 getYear(), getMonth() 와 같이 받아와야 함
         private val month: Int,
         private val model: CalendarItemModel
+        //TODO: 의존성을 낮추려면, 모델의 펑션들을 추상화 한 인터페이스만을 전달해야함
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -24,6 +25,8 @@ class CalendarAdapter(
         return ViewHolder(
                 binding,
                 model
+            //TODO: 의존성을 낮추려면, 모델의 펑션들을 추상화 한 인터페이스만을 전달해야함
+
         )
     }
 
@@ -37,6 +40,7 @@ class CalendarAdapter(
         return model.getCalendarItemLists().size
     }
 
+    // TODO :  뷰홀더는 이왕이면 같은 File내부에 말고, 외부에 따로 파일관리 하는 것을 추천, 또한 같은 파일에 선언하더라고 특정 Class내부에 이런식으로 선언하지 말것
     class ViewHolder(
             private val binding: ItemCalendarDateBinding,
             private val model: CalendarItemModel
@@ -46,6 +50,9 @@ class CalendarAdapter(
             setListener()
         }
 
+
+        // TODO : 아래에 공통적으로 쓰이지만 조건에 따라 다른 Value를 셋 하는 펑션은 공통 펑션으로 하나 빼서 bind() 펑션안에서는 그 공통 펑션에 파라미터값을 전달해 호출만 하도록 수정 바람
+        // TODO : bind()처럼 하나의 펑션에 너무 많은 "로직"들이 존재하면 가독성 매우 떨어짐 , 또한 펑션 콜의 플로우를 볼수 없음 .
         fun bind(year: Int, month: Int) {
             val item = model.getCalendarItemLists()[adapterPosition]
             val calendar = GregorianCalendar(year, month, item.date)
@@ -56,6 +63,11 @@ class CalendarAdapter(
             binding.calendarDate.text = item.date.toString()
 
             // 0이 있는 곳은 날짜가 생성되지 않아야 하는 곳이다.
+
+            //TODO : 아래의 IF문들은 모두 Model에서 검사하고 결과값만 호출받아 View의 세팅만 할 것
+            // TODO : 아래는 예시
+            //TODO : if(model.isdayOfWeeks(position)){ ~~ }
+            //TODO : if(model.isSunday(position)){ ~~ }
             if (item.date == 0) {
                 binding.apply {
                     imageViewDayColor.visibility = View.GONE
@@ -95,6 +107,7 @@ class CalendarAdapter(
             binding.root.setOnClickListener(this)
         }
 
+        //TODO : oncliCK에서 바로 로직을 놓지말고, 따로 펑션을 분리한뒤 펑션 호출만 놓을 수 있도록 바람.
         override fun onClick(v: View?) {
             when(v) {
                 binding.root -> {
@@ -110,6 +123,7 @@ class CalendarAdapter(
             }
         }
 
+        // TODO : 년, 월, 일 같은 워딩들은 모두 상수 이므로 코드로직 상에 하드코딩으로 주입하지 말고, 클래스 맴버 필드나, companyon OBject에서 관리
         private fun makeDateString(year: Int, month: Int, date: Int): String {
             return year.toString() + "년" + " " + (month + 1).toString() + "월" + " " + date.toString() + "일"
         }
