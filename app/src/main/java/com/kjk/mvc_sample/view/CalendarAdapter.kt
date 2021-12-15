@@ -12,7 +12,9 @@ import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
 import com.kjk.mvc_sample.extension.isCurrentMonth
 import java.util.*
 import com.kjk.mvc_sample.extension.isToday
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.temporal.ChronoField
 
 /**
  *  Adapter에서 Data Layer인 Repository를 사용하는 것은 좋지 않다.(의존성 문제)
@@ -36,8 +38,6 @@ class CalendarAdapter(
 
         // bind에서는 굳이 포지션 값이 필요없다. 현재 포지션에 그려주는 것이기 때문에 position값이 필요없다.
         fun bind(calendarItemEntity: CalendarItemEntity, month: Int) {
-//            val item = repository.getCalendarItemLists()[adapterPosition]
-//            val calendar = GregorianCalendar(year, month, item.date)
 
             binding.apply {
                 calendarDate.text = calendarItemEntity.date.toString()
@@ -82,10 +82,10 @@ class CalendarAdapter(
                     calendarItemEntity.toLocalDate().isToday() -> {
                         imageViewDayColor.setBackgroundColor(Color.GREEN)
                     }
-                    calendarItemEntity.getDayOfWeek() == Calendar.SATURDAY -> {
+                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SATURDAY.value -> {
                         imageViewDayColor.setBackgroundColor(Color.BLUE)
                     }
-                    calendarItemEntity.getDayOfWeek() == Calendar.SUNDAY -> {
+                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SUNDAY.value -> {
                         imageViewDayColor.setBackgroundColor(Color.RED)
                     }
                     else -> {
@@ -102,10 +102,10 @@ class CalendarAdapter(
                     calendarItemEntity.toLocalDate().isToday() -> {
                         calendarDate.setTextColor(Color.GREEN)
                     }
-                    calendarItemEntity.getDayOfWeek() == Calendar.SATURDAY -> {
+                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SATURDAY.value -> {
                         calendarDate.setTextColor(Color.BLUE)
                     }
-                    calendarItemEntity.getDayOfWeek() == Calendar.SUNDAY -> {
+                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SUNDAY.value -> {
                         calendarDate.setTextColor(Color.RED)
                     }
                     else -> {

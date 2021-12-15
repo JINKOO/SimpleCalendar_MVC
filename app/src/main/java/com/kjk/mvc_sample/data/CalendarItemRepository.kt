@@ -42,21 +42,23 @@ class CalendarItemRepository {
 
         // 현재 달의 시작 요일
         val dayOfWeek = localDate.dayOfWeek.value
-        val startDate = localDate.apply {
+        val startDate = localDate.run {
             minusDays(dayOfWeek.toLong())
         }
 
-        Log.w(TAG, "fetchCalendarData: ${dayOfWeek}, ${startDate}")
+        Log.w(TAG, "fetchCalendarData: ${localDate}, ${dayOfWeek}, ${startDate}")
 
-        repeat(42) {
-            (startDate)
-                    .apply {plusDays(1)}
-                    .toCalendarItemEntity()
-                    .also { calendarItemLists.add(it) }
-            Log.w(TAG, "fetchCalendarData: ${it}, ${startDate}")
+        var currentDate = startDate
+        repeat(42) { it ->
+            Log.w(TAG, "fetchCalendarData: ${it}, ${currentDate}")
+            currentDate.toCalendarItemEntity().also {
+                calendarItemLists.add(it)
+            }
+            currentDate = currentDate.run { plusDays(1) }
         }
     }
 
+    /*
     private fun checkDayOfWeek(dayOfWeek: Int): String {
         return when(dayOfWeek) {
             Calendar.SUNDAY -> "일요일"
@@ -69,6 +71,7 @@ class CalendarItemRepository {
             else -> ""
         }
     }
+     */
 
     fun deleteAllDate() {
         calendarItemLists.clear()
