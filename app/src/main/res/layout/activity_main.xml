@@ -29,7 +29,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textview_current_month"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintHorizontal_weight="3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +41,7 @@
                 android:textSize="20dp"
                 app:layout_constraintEnd_toStartOf="@+id/button_next_month"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="6"
+                app:layout_constraintHorizontal_weight="4"
                 app:layout_constraintStart_toEndOf="@+id/button_pre_month"
                 app:layout_constraintTop_toTopOf="@+id/button_pre_month"
                 app:layout_constraintBottom_toBottomOf="@+id/button_pre_month"
@@ -54,7 +54,7 @@
                 android:src="@drawable/ic_baseline_navigate_next_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintHorizontal_weight="3"
                 app:layout_constraintStart_toEndOf="@+id/textview_current_month"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>

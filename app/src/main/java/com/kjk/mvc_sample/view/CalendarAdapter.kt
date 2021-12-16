@@ -26,95 +26,7 @@ class CalendarAdapter(
         var month: Int,
         var date: Int,
         var itemList: ArrayList<CalendarItemEntity>
-) : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
-
-    class CalendarViewHolder(
-        private val binding: ItemCalendarDateBinding
-    ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-
-        init {
-            setListener()
-        }
-
-        // bind에서는 굳이 포지션 값이 필요없다. 현재 포지션에 그려주는 것이기 때문에 position값이 필요없다.
-        fun bind(calendarItemEntity: CalendarItemEntity, month: Int) {
-
-            binding.apply {
-                calendarDate.text = calendarItemEntity.date.toString()
-
-                // 현재 그려져야 할 월에 해당하는 날짜라면,
-                if (calendarItemEntity.toLocalDate().isCurrentMonth(month)) {
-                    setDateHeaderColor(calendarItemEntity)
-                    setDateTextColor(calendarItemEntity)
-                } else { // 이전 달, or 다음 달의 날짜라면 회색으로 표시한다.
-                    calendarDate.setTextColor(Color.GRAY)
-                }
-            }
-        }
-
-        private fun setListener() {
-            binding.root.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            when(v) {
-                binding.root -> {
-                    // 날짜가 생성된 부분에서만 한다.
-//                    if (repository.getCalendarItemLists()[adapterPosition].date != 0) {
-//                        Toast.makeText(
-//                            binding.root.context,
-//                            makeDateString(repository.getCurrentCalendar().get(Calendar.YEAR), repository.getCurrentCalendar().get(Calendar.MONTH), repository.getCalendarItemLists()[adapterPosition].date),
-//                            Toast.LENGTH_SHORT)
-//                            .show()
-//                    }
-                }
-            }
-        }
-
-        private fun makeDateString(year: Int, month: Int, date: Int): String {
-            return year.toString() + "년" + " " + (month + 1).toString() + "월" + " " + date.toString() + "일"
-        }
-
-        /** 각 날짜 칸에서 위의 색상을 지정하는 함수 */
-        private fun setDateHeaderColor(calendarItemEntity: CalendarItemEntity) {
-            binding.apply {
-                when {
-                    calendarItemEntity.toLocalDate().isToday() -> {
-                        imageViewDayColor.setBackgroundColor(Color.GREEN)
-                    }
-                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SATURDAY.value -> {
-                        imageViewDayColor.setBackgroundColor(Color.BLUE)
-                    }
-                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SUNDAY.value -> {
-                        imageViewDayColor.setBackgroundColor(Color.RED)
-                    }
-                    else -> {
-                        imageViewDayColor.setBackgroundColor(Color.WHITE)
-                    }
-                }
-            }
-        }
-
-        /** 각 날짜 칸에서 날짜 텍스트를 지정하는 것 */
-        private fun setDateTextColor(calendarItemEntity: CalendarItemEntity) {
-            binding.apply {
-                when {
-                    calendarItemEntity.toLocalDate().isToday() -> {
-                        calendarDate.setTextColor(Color.GREEN)
-                    }
-                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SATURDAY.value -> {
-                        calendarDate.setTextColor(Color.BLUE)
-                    }
-                    calendarItemEntity.getDayOfWeek() == DayOfWeek.SUNDAY.value -> {
-                        calendarDate.setTextColor(Color.RED)
-                    }
-                    else -> {
-                        calendarDate.setTextColor(Color.YELLOW)
-                    }
-                }
-            }
-        }
-    }
+) : RecyclerView.Adapter<CalendarViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -129,5 +41,76 @@ class CalendarAdapter(
 
     override fun getItemCount(): Int {
         return itemList.size
+    }
+}
+
+class CalendarViewHolder(
+        private val binding: ItemCalendarDateBinding
+) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+    fun bind(calendarItemEntity: CalendarItemEntity, month: Int) {
+        binding.apply {
+            calendarDate.text = calendarItemEntity.date.toString()
+
+            if (calendarItemEntity.toLocalDate().isCurrentMonth(month)) {
+                setDateHeaderColor(calendarItemEntity)
+                setDateTextColor(calendarItemEntity)
+            } else { // 이전 달, or 다음 달의 날짜라면 회색으로 표시 && 색상 표시 Gone
+                calendarDate.setTextColor(Color.GRAY)
+                imageViewDayColor.visibility = View.GONE
+            }
+
+            root.setOnClickListener {
+                Toast.makeText(binding.root.context, calendarItemEntity.toString(), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when(v) {
+            binding.root -> {
+                //TODO 확장성 고려
+            }
+        }
+    }
+
+    /** 각 날짜 칸에서 위의 색상을 지정하는 함수 */
+    private fun setDateHeaderColor(calendarItemEntity: CalendarItemEntity) {
+        binding.apply {
+            when {
+                calendarItemEntity.toLocalDate().isToday() -> {
+                    imageViewDayColor.setBackgroundColor(Color.GREEN)
+                }
+                calendarItemEntity.getDayOfWeek() == DayOfWeek.SATURDAY.value -> {
+                    imageViewDayColor.setBackgroundColor(Color.BLUE)
+                }
+                calendarItemEntity.getDayOfWeek() == DayOfWeek.SUNDAY.value -> {
+                    imageViewDayColor.setBackgroundColor(Color.RED)
+                }
+                else -> {
+                    imageViewDayColor.setBackgroundColor(Color.WHITE)
+                }
+            }
+        }
+    }
+
+    /** 각 날짜 칸에서 날짜 텍스트를 지정하는 것 */
+    private fun setDateTextColor(calendarItemEntity: CalendarItemEntity) {
+        binding.apply {
+            when {
+                calendarItemEntity.toLocalDate().isToday() -> {
+                    calendarDate.setTextColor(Color.GREEN)
+                }
+                calendarItemEntity.getDayOfWeek() == DayOfWeek.SATURDAY.value -> {
+                    calendarDate.setTextColor(Color.BLUE)
+                }
+                calendarItemEntity.getDayOfWeek() == DayOfWeek.SUNDAY.value -> {
+                    calendarDate.setTextColor(Color.RED)
+                }
+                else -> {
+                    calendarDate.setTextColor(Color.YELLOW)
+                }
+            }
+        }
     }
 }

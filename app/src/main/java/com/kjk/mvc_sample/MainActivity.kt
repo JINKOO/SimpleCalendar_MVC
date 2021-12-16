@@ -7,9 +7,12 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kjk.mvc_sample.data.CalendarItemRepository
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
+import com.kjk.mvc_sample.extension.formatAll
+import com.kjk.mvc_sample.extension.formatYearMonth
 import com.kjk.mvc_sample.view.CalendarAdapter
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -25,23 +28,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private val model = CalendarItemRepository()
     private lateinit var calendarAdapter: CalendarAdapter
-
-    /**
-     * 기존에 GregorianCalendar를 사용했지만,
-     * LocalDateTime을 실무에서 많이 사용하므로, 리팩토링 코드에서는 LocalDateTime을 사용한다.
-     */
-    // 현재 시간 받아오기
     private var baseDate = LocalDate.now()
-    private var year = baseDate.year
-    private var month = baseDate.monthValue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: ${baseDate}, ${year}, ${month}")
         setContentView(binding.root)
+
         setAdapter()
         setListeners()
-        setCalendar(year, month)
+        setCalendar(baseDate.year, baseDate.monthValue)
     }
 
     private fun setAdapter() {
@@ -64,10 +59,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setCalendar(year: Int, month: Int) {
-        Log.d(TAG, "setCalendar: ${year},  ${month}")
         model.fetchCalendarData(year, month)
+        fetchCalendarTitle(year, month)
         binding.apply {
-            textviewCurrentMonth.text = makeCurrentDateString(year, month)
             calendarAdapter.year = year
             calendarAdapter.month = month
             calendarAdapter.itemList = model.getCalendarItemLists()
@@ -75,9 +69,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun makeCurrentDateString(year: Int, month: Int): String {
-        val currentDate = LocalDate.of(year, month, 1)
-        return currentDate.year.toString() + "년" + " " + currentDate.monthValue.toString() + "월"
+    /** 달력의 년도, 월 Title set */
+    private fun fetchCalendarTitle(year: Int, month: Int) {
+        val currentYearMonth = LocalDate.of(year, month, 1).formatYearMonth()
+        binding.apply { textviewCurrentMonth.text =  currentYearMonth }
     }
 
     /** 이전 달, 다음 달 선택 했을 때, 현재 그려져 있는 달력을 지워야 한다.*/
