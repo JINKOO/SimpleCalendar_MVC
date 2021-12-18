@@ -41,9 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setAdapter() {
         calendarAdapter = CalendarAdapter(
-                baseDate.year,
-                baseDate.monthValue,
-                baseDate.dayOfMonth,
+                baseDate,
                 model.getCalendarItemLists()
         )
 
@@ -62,8 +60,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         model.fetchCalendarData(year, month)
         fetchCalendarTitle(year, month)
         binding.apply {
-            calendarAdapter.year = year
-            calendarAdapter.month = month
+            calendarAdapter.baseDate = baseDate
             calendarAdapter.itemList = model.getCalendarItemLists()
             calendarAdapter.notifyDataSetChanged()
         }
