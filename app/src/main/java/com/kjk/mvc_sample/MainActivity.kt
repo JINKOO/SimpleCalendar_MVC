@@ -2,13 +2,17 @@ package com.kjk.mvc_sample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kjk.mvc_sample.data.CalendarItemRepository
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
+import com.kjk.mvc_sample.extension.formatAll
 import com.kjk.mvc_sample.extension.formatYearMonth
 import com.kjk.mvc_sample.view.CalendarAdapter
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -37,9 +41,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setAdapter() {
         calendarAdapter = CalendarAdapter(
-                baseDate,
+                baseDate.year,
+                baseDate.monthValue,
+                baseDate.dayOfMonth,
                 model.getCalendarItemLists()
         )
+
         binding.apply {
             rvCalendar.layoutManager = GridLayoutManager(this@MainActivity, 7)
             rvCalendar.adapter = calendarAdapter
@@ -55,7 +62,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         model.fetchCalendarData(year, month)
         fetchCalendarTitle(year, month)
         binding.apply {
-            calendarAdapter.baseDate = baseDate
+            calendarAdapter.year = year
+            calendarAdapter.month = month
             calendarAdapter.itemList = model.getCalendarItemLists()
             calendarAdapter.notifyDataSetChanged()
         }
@@ -84,6 +92,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun moveMonth(changeDate: LocalDate) {
         baseDate = changeDate
+        Log.d(TAG, "moveAmount: ${changeDate.year}, ${changeDate.monthValue}")
         clearCalendar()
         setCalendar(baseDate.year, baseDate.monthValue)
     }
