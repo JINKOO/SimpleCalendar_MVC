@@ -22,9 +22,7 @@ import java.time.temporal.ChronoField
  *  Adapter에서는 Data Layer에서 Entity 혹은 VO를 사용해야 한다.
  */
 class CalendarAdapter(
-        var year: Int,
-        var month: Int,
-        var date: Int,
+        var baseDate: LocalDate,
         var itemList: ArrayList<CalendarItemEntity>
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -36,7 +34,7 @@ class CalendarAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.bind(itemList[position], month)
+        holder.bind(itemList[position], baseDate.monthValue)
     }
 
     override fun getItemCount(): Int {
