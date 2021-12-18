@@ -6,18 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.graphics.scaleMatrix
 import androidx.recyclerview.widget.RecyclerView
-import com.kjk.mvc_sample.data.CalendarItemModel
+import com.kjk.mvc_sample.data.CalendarItemEntity
+import com.kjk.mvc_sample.data.CalendarItemRepository
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
+import java.time.LocalDate
 import java.util.*
 
 class CalendarAdapter(
-        private val year: Int,
-        private val month: Int,
-        private val model: CalendarItemModel
+    var baseDate: LocalDate,
+    var itemList: ArrayList<CalendarItemEntity>,
+    var model: CalendarItemRepository
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,7 +29,7 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
-            holder.bind(year, month)
+            holder.bind(baseDate.year, baseDate.monthValue)
         }
     }
 
@@ -39,7 +39,7 @@ class CalendarAdapter(
 
     class ViewHolder(
             private val binding: ItemCalendarDateBinding,
-            private val model: CalendarItemModel
+            private val model: CalendarItemRepository
     ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         init {
@@ -99,13 +99,13 @@ class CalendarAdapter(
             when(v) {
                 binding.root -> {
                     // 날짜가 생성된 부분에서만 한다.
-                    if (model.getCalendarItemLists()[adapterPosition].date != 0) {
-                        Toast.makeText(
-                                binding.root.context,
-                                makeDateString(model.getCurrentCalendar().get(Calendar.YEAR), model.getCurrentCalendar().get(Calendar.MONTH), model.getCalendarItemLists()[adapterPosition].date),
-                                Toast.LENGTH_SHORT)
-                                .show()
-                    }
+//                    if (model.getCalendarItemLists()[adapterPosition].date != 0) {
+//                        Toast.makeText(
+//                                binding.root.context,
+//                                makeDateString(model.getCurrentCalendar().get(Calendar.YEAR), model.getCurrentCalendar().get(Calendar.MONTH), model.getCalendarItemLists()[adapterPosition].date),
+//                                Toast.LENGTH_SHORT)
+//                                .show()
+//                    }
                 }
             }
         }
