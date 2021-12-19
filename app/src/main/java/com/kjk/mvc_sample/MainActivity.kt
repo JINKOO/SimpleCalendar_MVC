@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kjk.mvc_sample.data.CalendarItemModel
+import com.kjk.mvc_sample.data.CalendarItemRepository
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
 import com.kjk.mvc_sample.view.CalendarAdapter
 import java.util.*
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val model = CalendarItemModel()
+    private val model = CalendarItemRepository()
 
     //TODO : by lazy와 late init을 어떤경우에 구분해서 쓰시나요?
     private lateinit var adapter: CalendarAdapter

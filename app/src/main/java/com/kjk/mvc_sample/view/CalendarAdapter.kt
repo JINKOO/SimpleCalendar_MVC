@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.graphics.scaleMatrix
 import androidx.recyclerview.widget.RecyclerView
-import com.kjk.mvc_sample.data.CalendarItemModel
+import com.kjk.mvc_sample.data.CalendarItemRepository
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
 import java.util.*
 
 class CalendarAdapter(
         private val year: Int, //TODO : 이런 값들은 직접 전달 하는것이아닌, 모델을 통해서 getYear(), getMonth() 와 같이 받아와야 함
         private val month: Int,
-        private val model: CalendarItemModel
+        private val model: CalendarItemRepository
         //TODO: 의존성을 낮추려면, 모델의 펑션들을 추상화 한 인터페이스만을 전달해야함
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -43,7 +42,7 @@ class CalendarAdapter(
     // TODO :  뷰홀더는 이왕이면 같은 File내부에 말고, 외부에 따로 파일관리 하는 것을 추천, 또한 같은 파일에 선언하더라고 특정 Class내부에 이런식으로 선언하지 말것
     class ViewHolder(
             private val binding: ItemCalendarDateBinding,
-            private val model: CalendarItemModel
+            private val model: CalendarItemRepository
     ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         init {

@@ -8,7 +8,7 @@ import kotlin.collections.ArrayList
  *   달력에서 날짜를 생성하는 부분.
  *   Model에서 비즈니스 로직에 해당하는 부분이다.
  */
-class CalendarItemModel {
+class CalendarItemRepository {
 
     private var calendarItemLists: ArrayList<CalendarItemEntity> = ArrayList()
     private lateinit var calendar: GregorianCalendar
