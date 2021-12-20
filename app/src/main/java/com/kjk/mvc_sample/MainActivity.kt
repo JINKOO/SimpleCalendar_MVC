@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
         setCalendarAdapter()
         setListeners()
-        setCalendar(
+        setCalendar(  // named parameter많이 사용하나요..??
             year = model.getBaseDate().year,
             month = model.getBaseDate().monthValue
         )
@@ -70,8 +70,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setCalendarAdapter() {
         calendarAdapter = CalendarAdapter(
-            baseDate = model.getBaseDate(),
-            itemList = model.getCalendarItemLists()
+                model.getBaseDate(),
+                model.getCalendarItemLists()
         )
 
         binding.rvCalendar.apply {
@@ -90,9 +90,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         model.fetchCalendarDate(year, month)
         calendarAdapter.apply {
             // TODO : 이 경우 apply의 용법이 잘못된 것 같습니다. -->
-            // 위와 같이 분리
+            // --> calendarAdapter에 대해서만 apply적용했습니다.
             calendarAdapter.baseDate = model.getBaseDate()
-            calendarAdapter.itemList = ArrayList<CalendarItemEntity>()
+            calendarAdapter.itemList = model.getCalendarItemLists()
             calendarAdapter.notifyDataSetChanged()
         }
     }
@@ -120,10 +120,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun moveMonth(changedLocalDate: LocalDate) {
         model.setBaseDate(changedLocalDate)
         clearCalendar()
-        setCalendar(
-            year = changedLocalDate.year,
-            month = changedLocalDate.year
-        )
+        setCalendar(changedLocalDate.year, changedLocalDate.monthValue)
     }
 
     override fun onClick(v: View?) {

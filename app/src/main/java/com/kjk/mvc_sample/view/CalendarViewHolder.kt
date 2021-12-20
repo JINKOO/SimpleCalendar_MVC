@@ -1,10 +1,13 @@
 package com.kjk.mvc_sample.view
 
+import android.graphics.Color
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.kjk.mvc_sample.data.CalendarItemEntity
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
 import com.kjk.mvc_sample.extension.formatAll
+import com.kjk.mvc_sample.extension.isCurrentMonth
 import java.time.LocalDate
 
 class CalendarViewHolder(
@@ -17,7 +20,7 @@ class CalendarViewHolder(
 
     // TODO : 아래에 공통적으로 쓰이지만 조건에 따라 다른 Value를 셋 하는 펑션은 공통 펑션으로 하나 빼서 bind() 펑션안에서는 그 공통 펑션에 파라미터값을 전달해 호출만 하도록 수정 바람
     // TODO : bind()처럼 하나의 펑션에 너무 많은 "로직"들이 존재하면 가독성 매우 떨어짐 , 또한 펑션 콜의 플로우를 볼수 없음 .
-    fun bind(year: Int, month: Int) {
+    fun bind(item: CalendarItemEntity, month: Int) {
 
 //        binding.calendarDate.text = item.date.toString()
 
@@ -59,6 +62,30 @@ class CalendarViewHolder(
 //                imageViewDayColor.setBackgroundColor(Color.GREEN)
 //            }
 //        }
+
+        binding.apply {
+            calendarDate.text = item.date.toString()
+            if (LocalDate.of(item.year, month, 1).isCurrentMonth(month)) {
+                setDateTextColor()
+                setDateUpperImageColor()
+            } else {
+                calendarDate.setTextColor(Color.GRAY)
+            }
+        }
+    }
+
+    private fun setDateTextColor() {
+       binding.apply {
+           // TODO 분기 처리 20211220
+           calendarDate.setTextColor(Color.YELLOW)
+       }
+    }
+
+    private fun setDateUpperImageColor() {
+        binding.apply {
+            // TODO 분기 처리 20211120
+            imageViewDayColor.setBackgroundColor(Color.WHITE)
+        }
     }
 
     private fun setListener() {

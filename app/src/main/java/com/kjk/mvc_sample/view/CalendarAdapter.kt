@@ -29,7 +29,7 @@ class CalendarAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.bind(baseDate.year, baseDate.monthValue)
+        holder.bind(itemList[position], baseDate.monthValue)
     }
 
     override fun getItemCount(): Int {

@@ -20,7 +20,6 @@ class CalendarItemRepository {
     // TODO : 캘린더 변수 초기화 / 월의 첫 요일 얻기 / 월의 마지막 요일 얻기 / 처음 시작하는 요일을 위해 리스트에 0 추가 / 1일부터 31일까지 추가
     // TODO : 이 많은 일들은 각각의 펑션으로 분리하고 최상위 펑션에서 각가그이 펑션을 호출만 해서 , 보는자로 하여금 코드 플로우를 알수있게 작성해야합니다.
     fun fetchCalendarDate(year: Int, month: Int) {
-
 //        // 현재 달의 시작 요일
 //        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 //
@@ -40,13 +39,17 @@ class CalendarItemRepository {
 //            calendarItemLists.add(CalendarItemEntity(date))
 //        }
 
-        /** 로직 변경했습니다. */
-        var currentLocalDate = LocalDate.of(year, month, 1)
-        var startDate = currentLocalDate.dayOfWeek.value
+        val currentLocalDate = LocalDate.of(year, month, 1)
+        val startDayOfWeek = currentLocalDate.dayOfWeek.value
+        val startDate = currentLocalDate.minusDays(startDayOfWeek.toLong())
 
-        Log.w(TAG, "fetchCalendarDate: ${startDate}")
-        repeat(42) {
-
+        var currentDate = startDate
+        repeat(CALENDAR_MAX_GRID_SIZE) {
+            currentDate.apply {
+                toCalendarItemEntity().also {
+                    calendarItemList.add(it) }
+            }
+            currentDate = currentDate.run { plusDays(1) }
         }
     }
 
@@ -77,6 +80,7 @@ class CalendarItemRepository {
     fun getCalendarItemLists() = this.calendarItemList
 
     companion object {
+        private const val CALENDAR_MAX_GRID_SIZE = 42
         private const val TAG = "CalendarItemRepository"
     }
 }
