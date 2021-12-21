@@ -1,6 +1,7 @@
 package com.kjk.mvc_sample.data
 
 import android.util.Log
+import com.kjk.mvc_sample.extension.toCalendarItemEntity
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,7 +30,8 @@ class CalendarItemRepository {
 //        Log.w("1111", "createCalendarDate() :: ${dayOfWeek}, ${checkDayOfWeek(dayOfWeek)}, ${max}")
 //
 //        // 달의 시작 요일 전까지 0을 add한다.
-//        // TODO : 다른 사람이 아래 1을 보면 어떤 의민지 알수 있을까요? ,  이런 경우를 위해 의미를 단박에 알수 없는 상수값의경 상수변수로 관리합니다. 변수 네이밍을 해서 .
+//        // TODO : 다른 사람이 아래 1을 보면 어떤 의민지 알수 있을까요? ,  이런 경우를 위해 의미를 단박에 알수 없는 상수값의경 상수변수로 관리합니다. 변수 네이밍을 해서 -->
+//        //      --> 49번째 줄처럼 사용하도록 수정했습니다.
 //        for (i in 1 until dayOfWeek) {
 //            calendarItemLists.add(CalendarItemEntity(0))
 //        }

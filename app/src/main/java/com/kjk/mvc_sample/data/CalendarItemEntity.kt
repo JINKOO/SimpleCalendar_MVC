@@ -1,5 +1,6 @@
 package com.kjk.mvc_sample.data
 
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 /**
@@ -19,10 +20,20 @@ data class CalendarItemEntity (
     }
 }
 
-fun LocalDate.toCalendarItemEntity(): CalendarItemEntity {
-    return CalendarItemEntity(
-            year,
-            monthValue,
-            dayOfMonth
-    )
+fun CalendarItemEntity.isToday(): Boolean {
+    return year == LocalDate.now().year &&
+            month == LocalDate.now().monthValue &&
+            date == LocalDate.now().dayOfMonth
+}
+
+fun CalendarItemEntity.isSaturday(): Boolean {
+    return toLocalDate().dayOfWeek == DayOfWeek.SATURDAY
+}
+
+fun CalendarItemEntity.isSunday(): Boolean {
+    return toLocalDate().dayOfWeek == DayOfWeek.SUNDAY
+}
+
+fun CalendarItemEntity.toLocalDate(): LocalDate {
+    return LocalDate.of(year, month, date)
 }

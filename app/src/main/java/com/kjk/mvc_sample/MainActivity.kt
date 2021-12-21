@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         binding.rvCalendar.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 7)
+            layoutManager = GridLayoutManager(this@MainActivity, GRID_LAYOUT_SPAN_COUNT)
             adapter = calendarAdapter
         }
     }
@@ -132,5 +132,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         private const val TAG = "MainActivity"
+        private const val GRID_LAYOUT_SPAN_COUNT = 7
     }
 }

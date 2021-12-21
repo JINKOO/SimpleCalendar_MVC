@@ -1,11 +1,15 @@
 package com.kjk.mvc_sample.extension
 
+import com.kjk.mvc_sample.data.CalendarItemEntity
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
-private val formatAllDate = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
-private val formatSimple = DateTimeFormatter.ofPattern("yyyy년 MM월")
+private const val YYYY_MM_dd = "yyyy년 MM월 dd일"
+private const val YYYY_MM = "yyyy년 MM월"
+
+private val formatAllDate = DateTimeFormatter.ofPattern(YYYY_MM_dd)
+private val formatSimple = DateTimeFormatter.ofPattern(YYYY_MM)
 
 fun LocalDate.formatYearMonth(): String {
     return format(formatSimple)
@@ -17,4 +21,12 @@ fun LocalDate.formatAll(): String {
 
 fun LocalDate.isCurrentMonth(month: Int): Boolean {
     return monthValue == month
+}
+
+fun LocalDate.toCalendarItemEntity(): CalendarItemEntity {
+    return CalendarItemEntity(
+            year,
+            monthValue,
+            dayOfMonth
+    )
 }

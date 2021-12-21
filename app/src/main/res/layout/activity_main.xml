@@ -35,7 +35,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textview_current_month"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintHorizontal_weight="3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +47,7 @@
                 android:textSize="20dp"
                 app:layout_constraintEnd_toStartOf="@+id/button_next_month"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="6"
+                app:layout_constraintHorizontal_weight="4"
                 app:layout_constraintStart_toEndOf="@+id/button_pre_month"
                 app:layout_constraintTop_toTopOf="@+id/button_pre_month"
                 app:layout_constraintBottom_toBottomOf="@+id/button_pre_month"
@@ -60,14 +60,14 @@
                 android:src="@drawable/ic_baseline_navigate_next_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintHorizontal_weight="3"
                 app:layout_constraintStart_toEndOf="@+id/textview_current_month"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <GridLayout
             android:id="@+id/linear_layout_days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,54 +75,54 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:gravity="center"
                 android:text="@string/sunday" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:gravity="center"
                 android:text="@string/monday" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:gravity="center"
                 android:text="@string/tuesday" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:gravity="center"
                 android:text="@string/wednesday" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:gravity="center"
                 android:text="@string/thursday" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:gravity="center"
                 android:text="@string/friday" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_columnWeight="1"
                 android:gravity="center"
                 android:text="@string/saturday" />
-        </LinearLayout>
+        </GridLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_calendar"
