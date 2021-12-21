@@ -12,7 +12,6 @@ import com.kjk.mvc_sample.extension.formatYearMonth
 import com.kjk.mvc_sample.view.CalendarAdapter
 import java.time.LocalDate
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  *  리사이클러 뷰를 사용해서
@@ -45,7 +44,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     // TODO : 얘네 전부 모델에 있어야할 놈들 -->
-    //        model(CalendarItemRepository)로 이동
+    //        model(CalendarItemRepository)에서 정의했습니다.
 //    private val today = GregorianCalendar()
 //    private var year = today.get(Calendar.YEAR)
 //    private var month = today.get(Calendar.MONTH)
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
         setCalendarAdapter()
         setListeners()
-        setCalendar(
+        setCalendar(  // named parameter많이 사용하나요..??
             year = model.getBaseDate().year,
             month = model.getBaseDate().monthValue
         )
@@ -71,13 +70,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setCalendarAdapter() {
         calendarAdapter = CalendarAdapter(
-            baseDate = model.getBaseDate(),
-            itemList = model.getCalendarItemLists(),
-            model = model
+                model.getBaseDate(),
+                model.getCalendarItemLists()
         )
 
         binding.rvCalendar.apply {
-            layoutManager = GridLayoutManager(this@MainActivity, 7)
+            layoutManager = GridLayoutManager(this@MainActivity, GRID_LAYOUT_SPAN_COUNT)
             adapter = calendarAdapter
         }
     }
@@ -89,12 +87,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setCalendar(year: Int, month: Int) {
         fetchCalendarTitle()
-        // fetchCalendarDate()
+        model.fetchCalendarDate(year, month)
         calendarAdapter.apply {
             // TODO : 이 경우 apply의 용법이 잘못된 것 같습니다. -->
-            // 위와 같이 분리
+            // --> calendarAdapter에 대해서만 apply적용했습니다.
             calendarAdapter.baseDate = model.getBaseDate()
-            calendarAdapter.itemList = ArrayList<CalendarItemEntity>()
+            calendarAdapter.itemList = model.getCalendarItemLists()
             calendarAdapter.notifyDataSetChanged()
         }
     }
@@ -122,10 +120,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun moveMonth(changedLocalDate: LocalDate) {
         model.setBaseDate(changedLocalDate)
         clearCalendar()
-        setCalendar(
-            year = changedLocalDate.year,
-            month = changedLocalDate.year
-        )
+        setCalendar(changedLocalDate.year, changedLocalDate.monthValue)
     }
 
     override fun onClick(v: View?) {
@@ -134,8 +129,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.buttonNextMonth -> { moveMonth(model.getBaseDate().plusMonths(1)) }
         }
     }
-    
+
     companion object {
         private const val TAG = "MainActivity"
+        private const val GRID_LAYOUT_SPAN_COUNT = 7
     }
 }
