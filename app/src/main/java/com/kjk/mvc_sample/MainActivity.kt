@@ -5,8 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kjk.mvc_sample.data.CalendarItemEntity
-import com.kjk.mvc_sample.data.CalendarItemRepository
+import com.kjk.mvc_sample.data.CalendarItemModel
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
 import com.kjk.mvc_sample.extension.formatYearMonth
 import com.kjk.mvc_sample.view.CalendarAdapter
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val model = CalendarItemRepository()
+    private val model = CalendarItemModel()
 
     // TODO : by lazy와 late init을 어떤경우에 구분해서 쓰시나요? -->
     //        이 코드를 작성했을 때에는 어떠한 경우에 구분해서 사용했는지는 몰랐습니다.
@@ -40,16 +39,39 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      *              primitive타입에서는 사용 할 수 없다. null타입이 될 수 없다.
      *              값이 저장되기 전에는 uninitialize상태로 존재한다. 사용전에 반드시 초기화 단계를 거쳐야 한다.
      */
-    private lateinit var calendarAdapter: CalendarAdapter
 
+    // lateinit 위험
+    private val calendarAdapter: CalendarAdapter by lazy {
+         CalendarAdapter(model)
+    }
 
     // TODO : 얘네 전부 모델에 있어야할 놈들 -->
-    //        model(CalendarItemRepository)에서 정의했습니다.
+    //        model(CalendarItemModel)에서 정의했습니다.
 //    private val today = GregorianCalendar()
 //    private var year = today.get(Calendar.YEAR)
 //    private var month = today.get(Calendar.MONTH)
     ///////////////////////////////////////////////
 
+
+      /** Log 사용 법 */
+//    fun makeLog( msg : String?, level : String){
+//        makelog("sdfjkhskjdfhjksdhfkjhsdfk")
+//
+//        if(BuildConfig.DEBUG){
+//            when( level){
+//                "w" ->{
+//                    Log.w(title, msg)
+//                }
+//                "e" ->{
+//                    Log.e()
+//                }
+//            }
+//        }
+//        else{
+//
+//        }
+//    }
+//
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,21 +82,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "onCreate: ${model.getBaseDate().year}, ${model.getBaseDate().monthValue}")
 
         setContentView(binding.root)
-        setCalendarAdapter()
         setListeners()
-        setCalendar(  // named parameter많이 사용하나요..??
-            year = model.getBaseDate().year,
-            month = model.getBaseDate().monthValue
-        )
+        setCalendarAdapter()
+        setCalendar(model.getBaseDate().year, model.getBaseDate().monthValue)
     }
 
     private fun setCalendarAdapter() {
-        calendarAdapter = CalendarAdapter(
-                model.getBaseDate(),
-                model.getCalendarItemLists()
-        )
-
-        binding.rvCalendar.apply {
+        binding.rvCalendar.run {
             layoutManager = GridLayoutManager(this@MainActivity, GRID_LAYOUT_SPAN_COUNT)
             adapter = calendarAdapter
         }
@@ -85,17 +99,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonNextMonth.setOnClickListener(this@MainActivity)
     }
 
+//    fun notifyView(){
+//        view.text = model.getName ()
+//        sdkjfklds
+//        sdf
+//        sdf
+//
+//        sdf
+//        sdf
+//
+//    }
+
     private fun setCalendar(year: Int, month: Int) {
+        Log.w(TAG, "setCalendar: ${year}, ${month}")
         fetchCalendarTitle()
         model.fetchCalendarDate(year, month)
-        calendarAdapter.apply {
+        calendarAdapter.run {
             // TODO : 이 경우 apply의 용법이 잘못된 것 같습니다. -->
             // --> calendarAdapter에 대해서만 apply적용했습니다.
-            calendarAdapter.baseDate = model.getBaseDate()
-            calendarAdapter.itemList = model.getCalendarItemLists()
-            calendarAdapter.notifyDataSetChanged()
+            notifyDataSetChanged()
         }
     }
+
 
     private fun fetchCalendarTitle() {
         binding.textviewCurrentMonth.apply { text = model.getBaseDate().formatYearMonth() }
@@ -135,3 +160,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         private const val GRID_LAYOUT_SPAN_COUNT = 7
     }
 }
+
+//interface ViewNotifyCallback {
+//    fun notify(state : State )
+//}
+//
+//// 월을 바꿧어 -> REDRAW_MONTH
+//// 년을 바꿧어 -> REDRAW_MONTH
+//.. 일을 바꿧어 -> REDRAW_MONTH
+//// 전체를 바꿧어 - > REDRAW_MONTH
+//// 월만 다시 그려줘 - REDRAW_MONTH
+///
+//
+//enum class ViewState {
+//    PARTITION , ALL, NEXTPAGE
+//}

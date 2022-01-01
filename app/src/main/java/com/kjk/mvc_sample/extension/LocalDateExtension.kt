@@ -5,8 +5,8 @@ import java.time.LocalDate
 import java.time.Month
 import java.time.format.DateTimeFormatter
 
-private const val YYYY_MM_dd = "yyyy년 MM월 dd일"
-private const val YYYY_MM = "yyyy년 MM월"
+const val YYYY_MM_dd = "yyyy년 MM월 dd일"
+const val YYYY_MM = "yyyy년 MM월"
 
 private val formatAllDate = DateTimeFormatter.ofPattern(YYYY_MM_dd)
 private val formatSimple = DateTimeFormatter.ofPattern(YYYY_MM)

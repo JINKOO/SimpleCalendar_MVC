@@ -1,6 +1,7 @@
 package com.kjk.mvc_sample.view
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -8,10 +9,12 @@ import com.kjk.mvc_sample.data.*
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
 import com.kjk.mvc_sample.extension.formatAll
 import com.kjk.mvc_sample.extension.isCurrentMonth
+import com.kjk.mvc_sample.extension.toLocalDate
 import java.time.LocalDate
 
 class CalendarViewHolder(
-        private val binding: ItemCalendarDateBinding
+        private val binding: ItemCalendarDateBinding,
+        private val sender: CalendarDataSender
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
     init {
@@ -32,6 +35,7 @@ class CalendarViewHolder(
         // TODO : if(model.isdayOfWeeks(position)){ ~~ }
         // TODO : if(model.isSunday(position)){ ~~ }
         //       --> model과 view간의 의존성을 없애기 위해, 확장 함수로 각 함수를 정의해 사용했습니다.
+        //       --> interface명세서를 만들고, 구현체를 넘김.
 //        if (item.date == 0) {
 //            binding.apply {
 //                imageViewDayColor.visibility = View.GONE
@@ -57,6 +61,9 @@ class CalendarViewHolder(
 //
 //        // 오늘 날짜 색상 지정색. 초록
 //        val today = GregorianCalendar()
+
+
+
 //        if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
 //                today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
 //                today.get(Calendar.DATE) == item.date) {
@@ -68,6 +75,7 @@ class CalendarViewHolder(
 
         binding.apply {
             calendarDate.text = item.date.toString()
+            Log.w(TAG, "bind: ${item.month}, ${month}")
             if (item.toLocalDate().isCurrentMonth(month)) {
                 setDateTextColor(item)
                 setDateUpperImageColor(item)
@@ -82,9 +90,9 @@ class CalendarViewHolder(
     private fun setDateTextColor(item: CalendarItemEntity) {
        binding.apply {
            when {
-               item.isToday() -> { calendarDate.setTextColor(Color.GREEN) }
-               item.isSaturday() -> { calendarDate.setTextColor(Color.BLUE) }
-               item.isSunday() -> { calendarDate.setTextColor(Color.RED) }
+               sender.isToday(item) -> { calendarDate.setTextColor(Color.GREEN) }
+               sender.isSaturday(item) -> { calendarDate.setTextColor(Color.BLUE) }
+               sender.isSunday(item) -> { calendarDate.setTextColor(Color.RED) }
                else -> {calendarDate.setTextColor(Color.LTGRAY)}
            }
        }
@@ -94,9 +102,9 @@ class CalendarViewHolder(
     private fun setDateUpperImageColor(item: CalendarItemEntity) {
         binding.apply {
             when {
-                item.isToday() -> { imageViewDayColor.setBackgroundColor(Color.GREEN) }
-                item.isSaturday() -> { imageViewDayColor.setBackgroundColor(Color.BLUE) }
-                item.isSunday() -> { imageViewDayColor.setBackgroundColor(Color.RED) }
+                sender.isToday(item) -> { imageViewDayColor.setBackgroundColor(Color.GREEN) }
+                sender.isSaturday(item) -> { imageViewDayColor.setBackgroundColor(Color.BLUE) }
+                sender.isSunday(item) -> { imageViewDayColor.setBackgroundColor(Color.RED) }
                 else -> { imageViewDayColor.setBackgroundColor(Color.WHITE) }
             }
         }
@@ -122,5 +130,9 @@ class CalendarViewHolder(
     //        --> 확장 함수로 분리했습니다.
     private fun makeDateString(year: Int, month: Int, date: Int): String {
         return year.toString() + "년" + " " + (month + 1).toString() + "월" + " " + date.toString() + "일"
+    }
+
+    companion object {
+        private const val TAG = "CalendarViewHolder"
     }
 }

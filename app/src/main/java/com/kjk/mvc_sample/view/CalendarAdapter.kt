@@ -3,14 +3,12 @@ package com.kjk.mvc_sample.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.kjk.mvc_sample.data.CalendarItemEntity
+import com.kjk.mvc_sample.data.CalendarDataSender
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
-import java.time.LocalDate
-import java.util.*
 
 class CalendarAdapter(
         // TODO : 이런 값들은 직접 전달 하는것이아닌, 모델을 통해서 getYear(), getMonth() 와 같이 받아와야 함
-        private val sender : ItemSender
+        private val sender : CalendarDataSender
         //        private val model: CalendarItemRepository
         // TODO: 의존성을 낮추려면, 모델의 펑션들을 추상화 한 인터페이스만을 전달해야함 -->
         //       --> model과 controller 의존성분리를 위해, Adapter에서는 model을 참조하지 않도록 함.
@@ -20,9 +18,9 @@ class CalendarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-
         return CalendarViewHolder(
-                binding
+                binding,
+                sender
 //                model
             // TODO : 의존성을 낮추려면, 모델의 펑션들을 추상화 한 인터페이스만을 전달해야함 -->
             //      --> model과 controller 의존성분리를 위해, Adapter에서는 model을 참조하지 않도록 함.
@@ -30,11 +28,11 @@ class CalendarAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.bind(itemList[position], baseDate.monthValue)
+        holder.bind(sender.getItemList()[position], sender.getBaseDate().monthValue)
     }
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return sender.getItemList().size
     }
 }
 
@@ -129,8 +127,8 @@ class CalendarAdapter(
 //}
 
 
-interface ItemSender {
-    fun getLocalDateInstance() : LocalDate
-    fun getItemListAll() : List<CalendarItemEntity>?
-    fun getItemForIndex( index : Int) : CalendarItemEntity?
-}
+//interface ItemSender {
+//    fun getLocalDateInstance() : LocalDate
+//    fun getItemListAll() : List<CalendarItemEntity>?
+//    fun getItemForIndex( index : Int) : CalendarItemEntity?
+//}

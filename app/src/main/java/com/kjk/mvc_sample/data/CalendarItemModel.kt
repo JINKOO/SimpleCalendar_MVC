@@ -2,16 +2,16 @@ package com.kjk.mvc_sample.data
 
 import android.util.Log
 import com.kjk.mvc_sample.extension.toCalendarItemEntity
-import com.kjk.mvc_sample.view.ItemSender
+import com.kjk.mvc_sample.extension.toLocalDate
+import java.time.DayOfWeek
 import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
  *   달력에서 날짜를 생성하는 부분.
  *   Model에서 비즈니스 로직에 해당하는 부분이다.
  */
-class CalendarItemRepository : ItemSender {
+class CalendarItemModel : CalendarDataSender {
 
     private var calendarItemList: ArrayList<CalendarItemEntity> = ArrayList()
     private var baseDate: LocalDate = LocalDate.now()
@@ -42,6 +42,7 @@ class CalendarItemRepository : ItemSender {
 //            calendarItemLists.add(CalendarItemEntity(date))
 //        }
 
+        Log.w(TAG, "fetchCalendarDate: ${year}, ${month}")
         val currentLocalDate = LocalDate.of(year, month, 1)
         val startDayOfWeek = currentLocalDate.dayOfWeek.value
         val startDate = currentLocalDate.minusDays(startDayOfWeek.toLong())
@@ -57,18 +58,18 @@ class CalendarItemRepository : ItemSender {
     }
 
     // TODO : 아래와 같은 요일에 대한 상수는 멤버 변수 또는 companyon OBject같은 스태틱 변수 또는  Enum  or Sealed class로 관리 바람
-    private fun checkDayOfWeek(dayOfWeek: Int): String {
-        return when(dayOfWeek) {
-            Calendar.SUNDAY -> "일요일"
-            Calendar.MONDAY -> "월요일"
-            Calendar.TUESDAY -> "화요일"
-            Calendar.WEDNESDAY -> "수요일"
-            Calendar.THURSDAY -> "목요일"
-            Calendar.FRIDAY -> "금요일"
-            Calendar.SATURDAY -> "토요일"
-            else -> ""
-        }
-    }
+//    private fun checkDayOfWeek(dayOfWeek: Int): String {
+//        return when(dayOfWeek) {
+//            Calendar.SUNDAY -> "일요일"
+//            Calendar.MONDAY -> "월요일"
+//            Calendar.TUESDAY -> "화요일"
+//            Calendar.WEDNESDAY -> "수요일"
+//            Calendar.THURSDAY -> "목요일"
+//            Calendar.FRIDAY -> "금요일"
+//            Calendar.SATURDAY -> "토요일"
+//            else -> ""
+//        }
+//    }
 
     fun deleteAllDate() {
         calendarItemList.clear()
@@ -78,24 +79,32 @@ class CalendarItemRepository : ItemSender {
         this.baseDate = localDate
     }
 
-    fun getBaseDate() = this.baseDate
-
-    fun getCalendarItemLists() = this.calendarItemList
-
-    companion object {
-        private const val CALENDAR_MAX_GRID_SIZE = 42
-        private const val TAG = "CalendarItemRepository"
+    override fun getBaseDate(): LocalDate {
+        return this.baseDate
     }
 
     override fun getLocalDateInstance(): LocalDate {
-
+        return LocalDate.now()
     }
 
-    override fun getItemListAll(): List<CalendarItemEntity>? {
-
+    override fun isToday(item: CalendarItemEntity): Boolean {
+        return item.toLocalDate() == LocalDate.now()
     }
 
-    override fun getItemForIndex(index: Int): CalendarItemEntity? {
+    override fun isSaturday(item: CalendarItemEntity): Boolean {
+        return item.toLocalDate().dayOfWeek == DayOfWeek.SATURDAY
+    }
 
+    override fun isSunday(item: CalendarItemEntity): Boolean {
+        return item.toLocalDate().dayOfWeek == DayOfWeek.SUNDAY
+    }
+
+    override fun getItemList(): ArrayList<CalendarItemEntity> {
+        return this.calendarItemList
+    }
+
+    companion object {
+        private const val CALENDAR_MAX_GRID_SIZE = 42
+        private const val TAG = "CalendarItemModel"
     }
 }
