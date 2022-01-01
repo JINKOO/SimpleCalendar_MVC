@@ -10,8 +10,7 @@ import java.util.*
 
 class CalendarAdapter(
         // TODO : 이런 값들은 직접 전달 하는것이아닌, 모델을 통해서 getYear(), getMonth() 와 같이 받아와야 함
-        var baseDate: LocalDate,
-        var itemList: ArrayList<CalendarItemEntity>
+        private val sender : ItemSender
         //        private val model: CalendarItemRepository
         // TODO: 의존성을 낮추려면, 모델의 펑션들을 추상화 한 인터페이스만을 전달해야함 -->
         //       --> model과 controller 의존성분리를 위해, Adapter에서는 model을 참조하지 않도록 함.
@@ -20,6 +19,8 @@ class CalendarAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+
         return CalendarViewHolder(
                 binding
 //                model
@@ -126,3 +127,10 @@ class CalendarAdapter(
 //        return year.toString() + "년" + " " + (month + 1).toString() + "월" + " " + date.toString() + "일"
 //    }
 //}
+
+
+interface ItemSender {
+    fun getLocalDateInstance() : LocalDate
+    fun getItemListAll() : List<CalendarItemEntity>?
+    fun getItemForIndex( index : Int) : CalendarItemEntity?
+}

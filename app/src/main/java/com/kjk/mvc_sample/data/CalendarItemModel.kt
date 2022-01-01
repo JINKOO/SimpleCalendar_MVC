@@ -2,6 +2,7 @@ package com.kjk.mvc_sample.data
 
 import android.util.Log
 import com.kjk.mvc_sample.extension.toCalendarItemEntity
+import com.kjk.mvc_sample.view.ItemSender
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
@@ -10,7 +11,7 @@ import kotlin.collections.ArrayList
  *   달력에서 날짜를 생성하는 부분.
  *   Model에서 비즈니스 로직에 해당하는 부분이다.
  */
-class CalendarItemRepository {
+class CalendarItemRepository : ItemSender {
 
     private var calendarItemList: ArrayList<CalendarItemEntity> = ArrayList()
     private var baseDate: LocalDate = LocalDate.now()
@@ -84,5 +85,17 @@ class CalendarItemRepository {
     companion object {
         private const val CALENDAR_MAX_GRID_SIZE = 42
         private const val TAG = "CalendarItemRepository"
+    }
+
+    override fun getLocalDateInstance(): LocalDate {
+
+    }
+
+    override fun getItemListAll(): List<CalendarItemEntity>? {
+
+    }
+
+    override fun getItemForIndex(index: Int): CalendarItemEntity? {
+
     }
 }
