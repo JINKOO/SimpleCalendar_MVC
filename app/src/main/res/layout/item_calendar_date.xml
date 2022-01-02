@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:orientation="vertical">
+        <!-- TODO : 결과가 제대로 나오더라도, Layout을 Preview단 부터 정확하게 작성하는 습관이 필요해보입니다.-->
+        <!-- TODO : TextView의 layout_gravity가 조절 되어야 할 것 같네용 -->
 
         <ImageView
             android:id="@+id/image_view_day_color"
