@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kjk.mvc_sample.data.CalendarItemModel
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
 import com.kjk.mvc_sample.extension.formatYearMonth
+import com.kjk.mvc_sample.extension.toLocalDate
 import com.kjk.mvc_sample.view.CalendarAdapter
+import com.kjk.mvc_sample.view.OnCalendarItemClicked
 import java.time.LocalDate
 import java.util.*
 
@@ -39,19 +42,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
      *              primitive타입에서는 사용 할 수 없다. null타입이 될 수 없다.
      *              값이 저장되기 전에는 uninitialize상태로 존재한다. 사용전에 반드시 초기화 단계를 거쳐야 한다.
      */
-
-    // lateinit 위험
     private val calendarAdapter: CalendarAdapter by lazy {
-         CalendarAdapter(model)
+         CalendarAdapter(
+                 model
+         )
     }
-
-    // TODO : 얘네 전부 모델에 있어야할 놈들 -->
-    //        model(CalendarItemModel)에서 정의했습니다.
-//    private val today = GregorianCalendar()
-//    private var year = today.get(Calendar.YEAR)
-//    private var month = today.get(Calendar.MONTH)
-    ///////////////////////////////////////////////
-
 
       /** Log 사용 법 */
 //    fun makeLog( msg : String?, level : String){
@@ -76,15 +71,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // TODO : log w  레벨을 쓰는 이유는 뭔가요? -->
-        //        회사에서 사수분이 log w를 아래와 같은 형식으로 사용하면, 로그 확인할 때 편하다고 해서 사용했습니다.
-//        Log.w("1111", "current :: ${model.getBaseDate().year}, ${model.getBaseDate().monthValue}")
-        Log.d(TAG, "onCreate: ${model.getBaseDate().year}, ${model.getBaseDate().monthValue}")
-
         setContentView(binding.root)
         setListeners()
         setCalendarAdapter()
-        setCalendar(model.getBaseDate().year, model.getBaseDate().monthValue)
+        setCalendarTitle()
+        setCalendarDate()
     }
 
     private fun setCalendarAdapter() {
@@ -97,55 +88,37 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setListeners() {
         binding.buttonPreMonth.setOnClickListener(this@MainActivity)
         binding.buttonNextMonth.setOnClickListener(this@MainActivity)
+
+        calendarAdapter.setItemClickedListener(object: OnCalendarItemClicked {
+            override fun onDateItemClicked(view: View, position: Int) {
+                Toast.makeText(applicationContext, model.getItemList()[position].toLocalDate().formatYearMonth(), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
-//    fun notifyView(){
-//        view.text = model.getName ()
-//        sdkjfklds
-//        sdf
-//        sdf
-//
-//        sdf
-//        sdf
-//
-//    }
+    private fun setCalendarTitle() {
+        binding.apply { textviewCurrentMonth.text = model.getBaseDate().formatYearMonth() }
+    }
 
-    private fun setCalendar(year: Int, month: Int) {
-        Log.w(TAG, "setCalendar: ${year}, ${month}")
-        fetchCalendarTitle()
-        model.fetchCalendarDate(year, month)
+    private fun setCalendarDate() {
+        model.fetchCalendarDate()
         calendarAdapter.run {
-            // TODO : 이 경우 apply의 용법이 잘못된 것 같습니다. -->
-            // --> calendarAdapter에 대해서만 apply적용했습니다.
             notifyDataSetChanged()
         }
-    }
-
-
-    private fun fetchCalendarTitle() {
-        binding.textviewCurrentMonth.apply { text = model.getBaseDate().formatYearMonth() }
-    }
-
-    // TODO : 이 놈은 모델에 있어야할 펑션입니다. -->
-    // 확장 함수를 정의한 kt파일 생성 후, 해당 파일(LocalDateExtension.kt)에 LocalDate의 확장 함수로 변경했습니다.
-    private fun makeCurrentDateString(year: Int, month: Int): String {
-        val currentDate = GregorianCalendar(year, month, 1)
-        return currentDate.get(Calendar.YEAR).toString() + "년" + " " + (currentDate.get(Calendar.MONTH) + 1).toString() + "월"
     }
 
     /** 이전 달, 다음 달 선택 했을 때, 현재 그려져 있는 달력을 지워야 한다.*/
     private fun clearCalendar() {
         model.deleteAllDate()
         calendarAdapter.notifyDataSetChanged()
-        // TODO : 어댑터를 왜 다씨 주입하죠?
-//        binding.rvCalendar.adapter = calendarAdapter
     }
 
     /** 이전 달, 다음 달 이동 로직 */
     private fun moveMonth(changedLocalDate: LocalDate) {
         model.setBaseDate(changedLocalDate)
         clearCalendar()
-        setCalendar(changedLocalDate.year, changedLocalDate.monthValue)
+        setCalendarTitle()
+        setCalendarDate()
     }
 
     override fun onClick(v: View?) {
@@ -159,6 +132,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         private const val TAG = "MainActivity"
         private const val GRID_LAYOUT_SPAN_COUNT = 7
     }
+
+//    fun notifyView(){
+//        view.text = model.getName ()
+//        sdkjfklds
+//        sdf
+//        sdf
+//        sdf
+//        sdf
+//
+//    }
 }
 
 //interface ViewNotifyCallback {

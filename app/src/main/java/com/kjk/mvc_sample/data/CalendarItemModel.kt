@@ -1,6 +1,5 @@
 package com.kjk.mvc_sample.data
 
-import android.util.Log
 import com.kjk.mvc_sample.extension.toCalendarItemEntity
 import com.kjk.mvc_sample.extension.toLocalDate
 import java.time.DayOfWeek
@@ -21,7 +20,7 @@ class CalendarItemModel : CalendarDataSender {
     //      --> 함수 이름 변경했습니다.
     // TODO : 캘린더 변수 초기화 / 월의 첫 요일 얻기 / 월의 마지막 요일 얻기 / 처음 시작하는 요일을 위해 리스트에 0 추가 / 1일부터 31일까지 추가
     // TODO : 이 많은 일들은 각각의 펑션으로 분리하고 최상위 펑션에서 각가그이 펑션을 호출만 해서 , 보는자로 하여금 코드 플로우를 알수있게 작성해야합니다.
-    fun fetchCalendarDate(year: Int, month: Int) {
+    fun fetchCalendarDate() {
 //        // 현재 달의 시작 요일
 //        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 //
@@ -42,8 +41,7 @@ class CalendarItemModel : CalendarDataSender {
 //            calendarItemLists.add(CalendarItemEntity(date))
 //        }
 
-        Log.w(TAG, "fetchCalendarDate: ${year}, ${month}")
-        val currentLocalDate = LocalDate.of(year, month, 1)
+        val currentLocalDate = LocalDate.of(baseDate.year, baseDate.monthValue, 1)
         val startDayOfWeek = currentLocalDate.dayOfWeek.value
         val startDate = currentLocalDate.minusDays(startDayOfWeek.toLong())
 
@@ -83,9 +81,6 @@ class CalendarItemModel : CalendarDataSender {
         return this.baseDate
     }
 
-    override fun getLocalDateInstance(): LocalDate {
-        return LocalDate.now()
-    }
 
     override fun isToday(item: CalendarItemEntity): Boolean {
         return item.toLocalDate() == LocalDate.now()

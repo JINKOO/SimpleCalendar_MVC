@@ -19,23 +19,3 @@ data class CalendarItemEntity (
         return "${year}년 ${month}월 ${date}일"
     }
 }
-
-
-// Entity Class에는 Entitiy만 정의하는 data class만 있는 것이 좋다.
-//fun CalendarItemEntity.isToday(): Boolean {
-//    return year == LocalDate.now().year &&
-//            month == LocalDate.now().monthValue &&
-//            date == LocalDate.now().dayOfMonth
-//}
-//
-//fun CalendarItemEntity.isSaturday(): Boolean {
-//    return toLocalDate().dayOfWeek == DayOfWeek.SATURDAY
-//}
-//
-//fun CalendarItemEntity.isSunday(): Boolean {
-//    return toLocalDate().dayOfWeek == DayOfWeek.SUNDAY
-//}
-//
-//fun CalendarItemEntity.toLocalDate(): LocalDate {
-//    return LocalDate.of(year, month, date)
-//}

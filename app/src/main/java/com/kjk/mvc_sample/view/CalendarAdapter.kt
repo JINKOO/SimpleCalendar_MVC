@@ -1,10 +1,15 @@
 package com.kjk.mvc_sample.view
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kjk.mvc_sample.data.CalendarDataSender
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
+
+interface OnCalendarItemClicked {
+    fun onDateItemClicked(view: View, position: Int)
+}
 
 class CalendarAdapter(
         // TODO : 이런 값들은 직접 전달 하는것이아닌, 모델을 통해서 getYear(), getMonth() 와 같이 받아와야 함
@@ -14,6 +19,8 @@ class CalendarAdapter(
         //       --> model과 controller 의존성분리를 위해, Adapter에서는 model을 참조하지 않도록 함.
         //           model의 값이 필요한 경우, view(Activity)를 통해서 가져오도록 수정하였습니다.
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
+
+    private lateinit var mListener: OnCalendarItemClicked
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,10 +36,15 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         holder.bind(sender.getItemList()[position], sender.getBaseDate().monthValue)
+//        holder.setListener(mListener)
     }
 
     override fun getItemCount(): Int {
         return sender.getItemList().size
+    }
+
+    fun setItemClickedListener(onCalendarItemClicked: OnCalendarItemClicked) {
+        this.mListener = onCalendarItemClicked
     }
 }
 
@@ -124,11 +136,4 @@ class CalendarAdapter(
 //    private fun makeDateString(year: Int, month: Int, date: Int): String {
 //        return year.toString() + "년" + " " + (month + 1).toString() + "월" + " " + date.toString() + "일"
 //    }
-//}
-
-
-//interface ItemSender {
-//    fun getLocalDateInstance() : LocalDate
-//    fun getItemListAll() : List<CalendarItemEntity>?
-//    fun getItemForIndex( index : Int) : CalendarItemEntity?
 //}
