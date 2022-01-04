@@ -2,16 +2,12 @@ package com.kjk.mvc_sample
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kjk.mvc_sample.data.CalendarItemModel
 import com.kjk.mvc_sample.databinding.ActivityMainBinding
 import com.kjk.mvc_sample.extension.formatYearMonth
-import com.kjk.mvc_sample.extension.toLocalDate
 import com.kjk.mvc_sample.view.CalendarAdapter
-import com.kjk.mvc_sample.view.OnCalendarItemClicked
 import java.time.LocalDate
 import java.util.*
 
