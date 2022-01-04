@@ -9,7 +9,6 @@ import java.time.LocalDate
  *  우선, 날짜 data만을 가진다.
  */
 
-// TODO : 웬만해서 Entity는 ID 필드를 갖고 있게 하는게 좋음 val id : Int
 data class CalendarItemEntity (
         val year: Int,
         val month: Int,
