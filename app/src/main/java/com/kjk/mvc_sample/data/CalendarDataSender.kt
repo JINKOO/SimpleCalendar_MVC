@@ -8,4 +8,5 @@ interface CalendarDataSender {
     fun isSaturday(item: CalendarItemEntity): Boolean
     fun isSunday(item: CalendarItemEntity): Boolean
     fun getItemList(): ArrayList<CalendarItemEntity>
+    fun getSelectedDate(position: Int): LocalDate
 }
