@@ -31,22 +31,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setListeners()
-        setCalendarAdapter()
-        setCalendarTitle()
-        setCalendarDate()
-    }
 
-    private fun setCalendarAdapter() {
-        binding.rvCalendar.run {
-            layoutManager = GridLayoutManager(this@MainActivity, GRID_LAYOUT_SPAN_COUNT)
-            adapter = calendarAdapter
-        }
+        setListeners()
+        initCalendarData()
     }
 
     private fun setListeners() {
         binding.buttonPreMonth.setOnClickListener(this@MainActivity)
         binding.buttonNextMonth.setOnClickListener(this@MainActivity)
+    }
+
+    private fun initCalendarData() {
+        setCalendarTitle()
+        setCalendarLayout()
+        setCalendarDate()
+    }
+
+    private fun setCalendarLayout() {
+        binding.rvCalendar.run {
+            layoutManager = GridLayoutManager(this@MainActivity, GRID_LAYOUT_SPAN_COUNT)
+            adapter = calendarAdapter
+        }
     }
 
     private fun setCalendarTitle() {
