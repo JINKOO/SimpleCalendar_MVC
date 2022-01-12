@@ -19,7 +19,6 @@ class CalendarItemModel : CalendarDataSender {
     fun fetchCalendarDate() {
         val currentLocalDate = LocalDate.of(baseDate.year, baseDate.monthValue, 1)
         val startDate = currentLocalDate.minusDays(currentLocalDate.dayOfWeek.value.toLong())
-
         var currentDate = startDate
         repeat(CALENDAR_MAX_GRID_SIZE) {
             currentDate.run {
@@ -45,6 +44,10 @@ class CalendarItemModel : CalendarDataSender {
 
     override fun isToday(item: CalendarItemEntity): Boolean {
         return item.toLocalDate() == LocalDate.now()
+    }
+
+    override fun isCurrentMonth(item: CalendarItemEntity, currentMonth: Int): Boolean {
+        return item.month == currentMonth
     }
 
     override fun isSaturday(item: CalendarItemEntity): Boolean {

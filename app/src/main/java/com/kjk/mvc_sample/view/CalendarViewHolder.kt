@@ -1,16 +1,12 @@
 package com.kjk.mvc_sample.view
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.kjk.mvc_sample.data.*
 import com.kjk.mvc_sample.databinding.ItemCalendarDateBinding
 import com.kjk.mvc_sample.extension.formatAll
-import com.kjk.mvc_sample.extension.isCurrentMonth
-import com.kjk.mvc_sample.extension.toLocalDate
-import java.time.LocalDate
 
 class CalendarViewHolder(
         private val binding: ItemCalendarDateBinding,
@@ -24,7 +20,7 @@ class CalendarViewHolder(
     fun bind(item: CalendarItemEntity, month: Int) {
         binding.apply {
             setCalendarDate(item.date)
-            if (item.toLocalDate().isCurrentMonth(month)) {
+            if (sender.isCurrentMonth(item, month)) {
                 setDateTextColor(item)
                 setDateUpperImageColor(item)
             } else {
