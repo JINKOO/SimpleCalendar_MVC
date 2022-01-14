@@ -18,6 +18,7 @@ class CalendarViewHolder(
     }
 
     fun bind(item: CalendarItemEntity, month: Int) {
+        //Todo : Apply vs Run 어떤게 맞을까용
         binding.apply {
             setCalendarDate(item.date)
             if (sender.isCurrentMonth(item, month)) {

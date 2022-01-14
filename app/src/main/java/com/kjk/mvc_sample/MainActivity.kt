@@ -81,6 +81,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
+            //Todo : 굳이  model에서 가져온 getBaseDate를 다시 moveMonth로 전달해서 model.sedtBaseDate에 또 넣을 필요가 있을까요
+                // Todo : 저라면 moveMonth(actionType : ActionType)으로  앞버튼인지, 뒤 버튼인지만 보내면 될것 같은데,
             binding.buttonPreMonth -> { moveMonth(model.getBaseDate().minusMonths(MONTH_TO_MOVE)) }
             binding.buttonNextMonth -> { moveMonth(model.getBaseDate().plusMonths(MONTH_TO_MOVE)) }
         }
