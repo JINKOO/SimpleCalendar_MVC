@@ -21,6 +21,10 @@
         TODO : ViewGrouop의 Depth는 적을 수록 좋습니다.
         -->
 
+        <!--
+        TODO : 뷰 뎁스가 무의미하게 깊어요, 이 부분 하나의 컨스트레인트로 수정할 수 있을 것 같은데 시도해보시면 좋을 듯 합니다.
+        -->
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/calendar_main_header"
