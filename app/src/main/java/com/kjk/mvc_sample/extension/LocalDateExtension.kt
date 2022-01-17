@@ -19,10 +19,6 @@ fun LocalDate.formatAll(): String {
     return format(formatAllDate)
 }
 
-fun LocalDate.isCurrentMonth(month: Int): Boolean {
-    return monthValue == month
-}
-
 fun LocalDate.toCalendarItemEntity(): CalendarItemEntity {
     return CalendarItemEntity(
             year,
