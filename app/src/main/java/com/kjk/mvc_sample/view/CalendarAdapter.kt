@@ -15,10 +15,13 @@ class CalendarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val binding = ItemCalendarDateBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CalendarViewHolder(binding, sender)
+        //Todo : Sender를 넘기는데,
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         holder.bind(sender.getItemList()[position], sender.getBaseDate().monthValue)
+        //Todo : 여기서 sender.getItemList()[position] / sender.getBaseDate().monthValue 를 넘 필요가 있을까요?
+        //Todo : Position만 넘기면 될것 같습니다.
     }
 
     override fun getItemCount(): Int {
